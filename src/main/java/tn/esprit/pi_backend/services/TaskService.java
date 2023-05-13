@@ -3,12 +3,13 @@ package tn.esprit.pi_backend.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tn.esprit.pi_backend.entities.Task;
+import tn.esprit.pi_backend.repositories.TaskRepository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class TaskRepository implements ITaskService{
+public class TaskService implements ITaskService{
     @Autowired
     private TaskRepository taskRepository;
     @Override
@@ -23,7 +24,7 @@ public class TaskRepository implements ITaskService{
 
     @Override
     public List<Task> findAll() {
-        return taskRepository.findAll();
+        return (List<Task>) taskRepository.findAll();
     }
 
     @Override
