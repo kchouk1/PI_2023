@@ -20,7 +20,7 @@ public class Presence {
 
     @ManyToOne
     @JoinColumn(name = "employe_id")
-    private User employe;
+    private User_Users employe;
 
     @Column(name = "statut")
     private String statut;
