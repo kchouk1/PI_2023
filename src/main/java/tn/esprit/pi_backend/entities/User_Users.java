@@ -1,7 +1,9 @@
 package tn.esprit.pi_backend.entities;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import lombok.*;
@@ -48,8 +50,11 @@ public class User_Users {
 
 
 
+    @ManyToOne
+    private Team team;
 
-
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Conge> conges = new ArrayList<>();
 
     public User_Users() {
     }
@@ -66,7 +71,9 @@ public class User_Users {
         return id;
     }
 
-
+    public Team getTeam() {
+        return team;
+    }
     public String getUsername() {
         return username;
     }
