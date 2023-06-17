@@ -9,7 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.pi_backend.entities.Role;
-import tn.esprit.pi_backend.entities.User_Users;
+import tn.esprit.pi_backend.entities.User;
 import tn.esprit.pi_backend.enums.ERole;
 import tn.esprit.pi_backend.payload.JwtResponse;
 import tn.esprit.pi_backend.payload.LoginRequest;
@@ -41,11 +41,11 @@ public class AuthController {
 
     @Autowired
     PasswordEncoder encoder;
-    User_Users user;
+    User user;
     @Autowired
     JwtTokenUtil jwtUtils;
 
-    User_Users checkuser;
+    User checkuser;
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -86,7 +86,7 @@ public class AuthController {
         }
 
         // Create new user's account
-        User_Users user = new User_Users(signUpRequest.getUsername(),
+        User user = new User(signUpRequest.getUsername(),
                 signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()));
 

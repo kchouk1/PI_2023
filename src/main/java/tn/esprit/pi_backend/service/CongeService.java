@@ -1,22 +1,16 @@
 package tn.esprit.pi_backend.service;
 
 import java.time.LocalDate;
-import java.util.Optional;
-import lombok.AllArgsConstructor;
+
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import tn.esprit.pi_backend.entities.Conge;
-import tn.esprit.pi_backend.entities.StatusOfDemand;
-import tn.esprit.pi_backend.entities.Team;
 
 import tn.esprit.pi_backend.repositories.CongeRepo;
 import tn.esprit.pi_backend.repositories.UserRepository;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 
@@ -25,11 +19,14 @@ public class CongeService implements ICongeService   {
 
     private static final int PRIORITE_MINIMALE = 3;
     private final CongeRepo congeRepository;
+
+    private final   UserRepository userRepository;
     private final TeamService teamService;
 
 
-    public CongeService(CongeRepo congeRepository, TeamService teamService) {
+    public CongeService(CongeRepo congeRepository, UserRepository userRepository, TeamService teamService) {
         this.congeRepository = congeRepository;
+        this.userRepository = userRepository;
         this.teamService = teamService;
     }
 
@@ -52,7 +49,7 @@ public class CongeService implements ICongeService   {
         Conge conge = getCongeById(id);
         conge.setDateDebut(congeDetails.getDateDebut());
         conge.setDateFin(congeDetails.getDateFin());
-        conge.setUsers(congeDetails.getUsers());
+      // conge.setUsers(congeDetails.getUsers());
         return congeRepository.save(conge);
     }
 

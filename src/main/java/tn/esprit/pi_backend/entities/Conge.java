@@ -46,8 +46,8 @@ public class Conge implements Serializable {
 //    @JoinColumn(name = "idUser", referencedColumnName = "idUser")
 //    private User_Users user;
 
-@ManyToOne
-    User_Users users;
+//@ManyToOne
+//    User_Users users;
 
 
 }

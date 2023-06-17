@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import tn.esprit.pi_backend.entities.User_Users;
+import tn.esprit.pi_backend.entities.User;
 import tn.esprit.pi_backend.service.UserDetailsServiceImpl;
 
 import javax.servlet.FilterChain;
@@ -24,7 +24,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
-    User_Users user;
+    User user;
     private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
     public static final int MY_STATIC_INTEGER = 0;
     @Override

@@ -28,6 +28,11 @@ public class WeekEntryController {
     public List<WeekEntry> getAllWeekEntries() {
     	return weekEntryRepository.findAll();
     }
+    
+    @GetMapping("{id}")
+    public List<WeekEntry> getUserWeekEntries(@PathVariable Long id) {
+    	return weekEntryRepository.findByUserId(id);
+    }
 
     @PostMapping
     public ResponseEntity<WeekEntry> addWeekEntry(@RequestBody WeekEntry weekEntry) {

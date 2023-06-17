@@ -1,6 +1,6 @@
 package tn.esprit.pi_backend.payload;
 
-import tn.esprit.pi_backend.entities.User_Users;
+import tn.esprit.pi_backend.entities.User;
 
 
 import javax.validation.constraints.NotBlank;
@@ -9,7 +9,7 @@ public class LoginRequest {
     @NotBlank
     private String username;
 
-    User_Users user;
+    User user;
 
     @NotBlank
     private String password;

@@ -3,6 +3,7 @@ package tn.esprit.pi_backend.entities;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -23,6 +24,14 @@ public class WeekEntry {
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<HourEntry> hourEntries;
+    
+    @JsonIgnore
+    @ManyToOne
+    @JoinTable(
+            name = "user_weeks",
+            joinColumns = @JoinColumn(name = "week_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private User user;
 
     // Getters and Setters
     public Long getId() {

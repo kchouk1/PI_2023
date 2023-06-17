@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tn.esprit.pi_backend.entities.Team;
 
-import tn.esprit.pi_backend.entities.User_Users;
+import tn.esprit.pi_backend.entities.User;
 import tn.esprit.pi_backend.repositories.TeamRepository;
 import tn.esprit.pi_backend.repositories.UserRepository;
 
@@ -55,25 +55,28 @@ public class TeamService {
 
     public void addUserToTeam(Long teamId, Long userId) {
         Optional<Team> teamOptional = teamRepository.findById(teamId);
-        Optional<User_Users> userOptional = userRepository.findById(userId);
+        Optional<User> userOptional = userRepository.findById(userId);
 
         if (teamOptional.isPresent() && userOptional.isPresent()) {
             Team team = teamOptional.get();
-            User_Users user = userOptional.get();
+            User user = userOptional.get();
             team.getUsers().add(user);
             teamRepository.save(team);
+            user.setBlocked(true);
+            System.out.println("i m in iffff");
         } else {
-            throw new RuntimeException("Team or User not found");
+             throw new RuntimeException("Team or User not found");
+
         }
     }
 
     public void removeUserFromTeam(Long teamId, Long userId) {
         Optional<Team> teamOptional = teamRepository.findById(teamId);
-        Optional<User_Users> userOptional = userRepository.findById(userId);
+        Optional<User> userOptional = userRepository.findById(userId);
 
         if (teamOptional.isPresent() && userOptional.isPresent()) {
             Team team = teamOptional.get();
-            User_Users user = userOptional.get();
+            User user = userOptional.get();
             team.getUsers().remove(user);
             teamRepository.save(team);
         } else {
