@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.pi_backend.entities.User;
 import tn.esprit.pi_backend.repositories.UserRepository;
@@ -11,7 +12,10 @@ import tn.esprit.pi_backend.service.IUser;
 import tn.esprit.pi_backend.service.UserService;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 @CrossOrigin(maxAge = 3600)
@@ -26,7 +30,12 @@ public class UserController {
     
     @Autowired
     UserRepository userRepository;
-    
+
+
+    @GetMapping("/current")
+    public Optional<User> getCurrentUser(Authentication authentication){
+        return userRepository.findByUsername(authentication.getName());
+    }
     @GetMapping()
     public List<User> getAllUsers(){
         return userRepository.findAll();

@@ -42,6 +42,7 @@ public class TeamService {
         if (existingTeamOptional.isPresent()) {
             Team existingTeam = existingTeamOptional.get();
             existingTeam.setName(team.getName());
+            existingTeam.setUsers(team.getUsers());
             return teamRepository.save(existingTeam);
         } else {
             throw new RuntimeException("Team not found");

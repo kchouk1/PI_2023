@@ -25,7 +25,7 @@ public class LoginRequest {
 
 
     public void setUsername(String username) {
-        this.username = username;
+            this.username = username;
     }
 
     public String getPassword() {
