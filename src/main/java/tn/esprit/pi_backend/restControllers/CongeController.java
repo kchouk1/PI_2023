@@ -16,8 +16,8 @@ import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.util.Optional;
 
+@CrossOrigin(maxAge = 3600)
 @RestController
-
 @RequestMapping("/conges")
 public class CongeController {
 

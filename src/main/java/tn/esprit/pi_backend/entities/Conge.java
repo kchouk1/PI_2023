@@ -1,6 +1,7 @@
 package tn.esprit.pi_backend.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,32 +23,18 @@ public class Conge implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     private int duree ;
     private int soldeConge ;
-
-
-    private Long UserId;
     private LocalDate dateDebut;
     private LocalDate dateFin;
-    private StatusOfDemand status ;
-    private boolean approuve;
+    private StatusOfDemand status =StatusOfDemand.NOT_YET_TREATED ;
 
-    // constructeurs, getters et setters
-
-    public boolean isApprouve() {
-        return approuve;
-    }
-
-    public void setApprouve(boolean approuve) {
-        this.approuve = approuve;
-    }
-//    @ManyToOne
-//    @JoinColumn(name = "idUser", referencedColumnName = "idUser")
-//    private User_Users user;
-
-//@ManyToOne
-//    User_Users users;
+@ManyToOne
+@JoinTable(
+        name = "user_conge",
+        joinColumns = @JoinColumn(name = "conge_id"),
+        inverseJoinColumns = @JoinColumn(name = "user_id"))
+private User user;
 
 
 }

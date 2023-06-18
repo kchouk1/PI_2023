@@ -1,9 +1,12 @@
 package tn.esprit.pi_backend.entities;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 @Entity
@@ -11,7 +14,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @Builder
-@Table(name = "User_Users")
+@Table(name = "user")
 public class User {
 
     @Id
@@ -45,14 +48,10 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-
-
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "team_id")
     private Team team;
 
-//    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Conge> conges = new ArrayList<>();
 
     public User() {
     }
@@ -69,9 +68,7 @@ public class User {
         return id;
     }
 
-    public Team getTeam() {
-        return team;
-    }
+
     public String getUsername() {
         return username;
     }

@@ -53,20 +53,43 @@ public class TeamService {
     }
 
 
+//    public void addUserToTeam(Long teamId, Long userId) {
+//        Optional<Team> teamOptional = teamRepository.findById(teamId);
+//        Optional<User> userOptional = userRepository.findById(userId);
+//
+//        if (teamOptional.isPresent() && userOptional.isPresent()) {
+//            Team team = teamOptional.get();
+//            User user = userOptional.get();
+//            team.getUsers().add(user);
+//            teamRepository.save(team);
+//            System.out.println("i m in iffff");
+//        } else {
+//             throw new RuntimeException("Team or User not found");
+//
+//        }
+//    }
+
+
+//    public void addUserToTeam(Long teamId, User user) {
+//        Team team = teamRepository.findById(teamId).get();
+//        if (team != null) {
+//            List<User> members = team.getUsers();
+//            members.add(user);
+//        }
+//    }
+
     public void addUserToTeam(Long teamId, Long userId) {
+        // Récupérer l'équipe et l'utilisateur à partir de leurs identifiants
         Optional<Team> teamOptional = teamRepository.findById(teamId);
         Optional<User> userOptional = userRepository.findById(userId);
 
-        if (teamOptional.isPresent() && userOptional.isPresent()) {
-            Team team = teamOptional.get();
-            User user = userOptional.get();
-            team.getUsers().add(user);
-            teamRepository.save(team);
-            user.setBlocked(true);
-            System.out.println("i m in iffff");
+        if (teamOptional != null && userOptional != null) {
+//            // Ajouter l'utilisateur à l'équipe
+//            teamOptional.get().add(user);
+//            // Mettre à jour l'équipe dans la base de données
+//            teamRepository.save(team);
         } else {
-             throw new RuntimeException("Team or User not found");
-
+            throw new IllegalArgumentException("Équipe ou utilisateur introuvable");
         }
     }
 
@@ -77,7 +100,7 @@ public class TeamService {
         if (teamOptional.isPresent() && userOptional.isPresent()) {
             Team team = teamOptional.get();
             User user = userOptional.get();
-            team.getUsers().remove(user);
+            //team.getUsers().remove(user);
             teamRepository.save(team);
         } else {
             throw new RuntimeException("Team or User not found");

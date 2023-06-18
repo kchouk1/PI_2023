@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import tn.esprit.pi_backend.entities.Conge;
 
+import tn.esprit.pi_backend.entities.StatusOfDemand;
 import tn.esprit.pi_backend.repositories.CongeRepo;
 import tn.esprit.pi_backend.repositories.UserRepository;
 
@@ -40,6 +41,7 @@ public class CongeService implements ICongeService   {
 
 
     public Conge createConge(Conge conge) {
+
         return congeRepository.save(conge);
     }
 
@@ -47,9 +49,23 @@ public class CongeService implements ICongeService   {
 
     public Conge updateConge(Long id, Conge congeDetails) {
         Conge conge = getCongeById(id);
-        conge.setDateDebut(congeDetails.getDateDebut());
-        conge.setDateFin(congeDetails.getDateFin());
-      // conge.setUsers(congeDetails.getUsers());
+        if(congeDetails.getDuree() !=0)
+        {
+            conge.setDuree(congeDetails.getDuree());
+        }
+        if(congeDetails.getSoldeConge() !=0)
+        {
+            conge.setSoldeConge(congeDetails.getSoldeConge());
+        }
+        if(congeDetails.getStatus() != null)
+        {
+            conge.setStatus(congeDetails.getStatus());
+        }
+        if(congeDetails.getDateDebut()!=null){
+        conge.setDateDebut(congeDetails.getDateDebut());}
+        if(congeDetails.getDateFin()!=null){
+        conge.setDateFin(congeDetails.getDateFin());}
+       conge.setUser(congeDetails.getUser());
         return congeRepository.save(conge);
     }
 
@@ -96,14 +112,14 @@ public class CongeService implements ICongeService   {
 //        return effectifDisponible > 0;
 //    }
 
-    private boolean hasCongesApprouvesPendantLaPeriode(Conge conge) {
-        LocalDate dateDebut = conge.getDateDebut();
-        LocalDate dateFin = conge.getDateFin();
-
-        List<Conge> congésPendantLaPériode = congeRepository.findByDateDebutGreaterThanEqualAndDateFinLessThanEqual(dateDebut, dateFin);
-        return congésPendantLaPériode.stream()
-                .anyMatch(Conge::isApprouve);
-    }
+//    private boolean hasCongesApprouvesPendantLaPeriode(Conge conge) {
+//        LocalDate dateDebut = conge.getDateDebut();
+//        LocalDate dateFin = conge.getDateFin();
+//
+//        List<Conge> congésPendantLaPériode = congeRepository.findByDateDebutGreaterThanEqualAndDateFinLessThanEqual(dateDebut, dateFin);
+//        return congésPendantLaPériode.stream()
+//                .anyMatch(Conge::isApprouve);
+//    }
 
 //    private boolean hasPrioriteElevee(Conge conge) {
 //        User user = conge.getUser();
@@ -134,13 +150,13 @@ public class CongeService implements ICongeService   {
 //    }
     public Conge accepterConge(Long congeId) {
         Conge conge = getCongeById(congeId);
-        conge.setApprouve(true);
+        conge.setStatus(StatusOfDemand.ACCEPTED);
         return congeRepository.save(conge);
     }
 
     public Conge refuserConge(Long congeId) {
         Conge conge = getCongeById(congeId);
-        conge.setApprouve(false);
+        conge.setStatus(StatusOfDemand.REJECTED);
         return congeRepository.save(conge);
     }
 
