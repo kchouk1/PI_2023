@@ -16,65 +16,65 @@ import java.util.List;
 @Service
 
 @Slf4j
-public class CongeService implements ICongeService   {
+public class CongeService implements ICongeService {
 
-    private static final int PRIORITE_MINIMALE = 3;
-    private final CongeRepo congeRepository;
+	private static final int PRIORITE_MINIMALE = 3;
+	private final CongeRepo congeRepository;
 
-    private final   UserRepository userRepository;
-    private final TeamService teamService;
+	private final UserRepository userRepository;
+	private final TeamService teamService;
 
+	public CongeService(CongeRepo congeRepository, UserRepository userRepository, TeamService teamService) {
+		this.congeRepository = congeRepository;
+		this.userRepository = userRepository;
+		this.teamService = teamService;
+	}
 
-    public CongeService(CongeRepo congeRepository, UserRepository userRepository, TeamService teamService) {
-        this.congeRepository = congeRepository;
-        this.userRepository = userRepository;
-        this.teamService = teamService;
-    }
+	public List<Conge> getAllConges() {
+		return congeRepository.findAll();
+	}
 
-    public List<Conge> getAllConges() {
-        return congeRepository.findAll();
-    }
+	public List<Conge> getAllCurrentConges(Long userId) {
+		LocalDate initialDate = LocalDate.now();
+		return congeRepository.findByDateDebutGreaterThanEqualAndDateFinLessThanEqualAndUserIdAndStatus(
+				initialDate.withDayOfMonth(1),
+				initialDate.withDayOfMonth(initialDate.getMonth().length(initialDate.isLeapYear())), userId,
+				StatusOfDemand.ACCEPTED);
+	}
 
-    public Conge getCongeById(Long id) {
-        return congeRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Conge not found"));
-    }
+	public Conge getCongeById(Long id) {
+		return congeRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Conge not found"));
+	}
 
+	public Conge createConge(Conge conge) {
 
-    public Conge createConge(Conge conge) {
+		return congeRepository.save(conge);
+	}
 
-        return congeRepository.save(conge);
-    }
+	public Conge updateConge(Long id, Conge congeDetails) {
+		Conge conge = getCongeById(id);
+		if (congeDetails.getDuree() != 0) {
+			conge.setDuree(congeDetails.getDuree());
+		}
+		if (congeDetails.getSoldeConge() != 0) {
+			conge.setSoldeConge(congeDetails.getSoldeConge());
+		}
+		if (congeDetails.getStatus() != null) {
+			conge.setStatus(congeDetails.getStatus());
+		}
+		if (congeDetails.getDateDebut() != null) {
+			conge.setDateDebut(congeDetails.getDateDebut());
+		}
+		if (congeDetails.getDateFin() != null) {
+			conge.setDateFin(congeDetails.getDateFin());
+		}
+		conge.setUser(congeDetails.getUser());
+		return congeRepository.save(conge);
+	}
 
-
-
-    public Conge updateConge(Long id, Conge congeDetails) {
-        Conge conge = getCongeById(id);
-        if(congeDetails.getDuree() !=0)
-        {
-            conge.setDuree(congeDetails.getDuree());
-        }
-        if(congeDetails.getSoldeConge() !=0)
-        {
-            conge.setSoldeConge(congeDetails.getSoldeConge());
-        }
-        if(congeDetails.getStatus() != null)
-        {
-            conge.setStatus(congeDetails.getStatus());
-        }
-        if(congeDetails.getDateDebut()!=null){
-        conge.setDateDebut(congeDetails.getDateDebut());}
-        if(congeDetails.getDateFin()!=null){
-        conge.setDateFin(congeDetails.getDateFin());}
-       conge.setUser(congeDetails.getUser());
-        return congeRepository.save(conge);
-    }
-
-    public void deleteConge(Long id) {
-        congeRepository.deleteById(id);
-    }
-
-
-
+	public void deleteConge(Long id) {
+		congeRepository.deleteById(id);
+	}
 
 //    public Conge createConge(Conge conge) {
 //        if (!isEffectifSuffisant(conge)) {
@@ -148,20 +148,20 @@ public class CongeService implements ICongeService   {
 //        int congésRestants = effectif - congésApprouvésPendantLaPériode - 1; // Soustraire 1 pour le congé demandé
 //        return congésRestants >= (effectif / 2); // Par exemple, l'équilibre est maintenu si plus de la moitié des membres peuvent encore prendre des congés
 //    }
-    public Conge accepterConge(Long congeId) {
-        Conge conge = getCongeById(congeId);
-        conge.setStatus(StatusOfDemand.ACCEPTED);
-        return congeRepository.save(conge);
-    }
+	public Conge accepterConge(Long congeId) {
+		Conge conge = getCongeById(congeId);
+		conge.setStatus(StatusOfDemand.ACCEPTED);
+		return congeRepository.save(conge);
+	}
 
-    public Conge refuserConge(Long congeId) {
-        Conge conge = getCongeById(congeId);
-        conge.setStatus(StatusOfDemand.REJECTED);
-        return congeRepository.save(conge);
-    }
+	public Conge refuserConge(Long congeId) {
+		Conge conge = getCongeById(congeId);
+		conge.setStatus(StatusOfDemand.REJECTED);
+		return congeRepository.save(conge);
+	}
 
-    @Override
-    public Conge ajouterConge(Conge conge) {
-        return null;
-    }
+	@Override
+	public Conge ajouterConge(Conge conge) {
+		return null;
+	}
 }

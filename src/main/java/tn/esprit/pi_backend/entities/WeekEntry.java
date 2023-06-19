@@ -21,6 +21,7 @@ public class WeekEntry {
     private LocalDate endDate;
 
     private String description;
+    private int numberOfHours;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<HourEntry> hourEntries;
@@ -73,4 +74,20 @@ public class WeekEntry {
     public void setHourEntries(List<HourEntry> hourEntries) {
         this.hourEntries = hourEntries;
     }
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public int getNumberOfHours() {
+		return numberOfHours;
+	}
+
+	public void setNumberOfHours(int numberOfHours) {
+		this.numberOfHours = numberOfHours;
+	}
 }
