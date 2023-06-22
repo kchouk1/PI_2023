@@ -21,7 +21,7 @@ public class TeamService {
     public TeamService(TeamRepository teamRepository, UserRepository userRepository) {
         this.teamRepository = teamRepository;
         this.userRepository = userRepository;
-    }
+    } //
 
     public List<Team> getAllTeams() {
         return teamRepository.findAll();
