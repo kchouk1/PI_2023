@@ -35,6 +35,11 @@ public class CongeController {
     public List<Conge> getAllConges() {
         return congeService.getAllConges();
     }
+    
+    @GetMapping("/user/{userId}")
+    public List<Conge> getAllConges(@PathVariable Long userId) {
+        return congeService.getAllCurrentConges(userId);
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Conge> getCongeById(@PathVariable Long id) {
