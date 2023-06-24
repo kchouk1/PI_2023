@@ -26,6 +26,7 @@ public class WeekEntryService {
 		if (user.isPresent()) {
 			weekEntry.setUser(user.get());
 		}
+
 		return weekEntryRepository.save(weekEntry);
 	}
 
