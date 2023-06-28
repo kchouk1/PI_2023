@@ -28,7 +28,6 @@ public class Conge implements Serializable {
     private LocalDate dateDebut;
     private LocalDate dateFin;
     private StatusOfDemand status =StatusOfDemand.NOT_YET_TREATED ;
-
 @ManyToOne
 @JoinTable(
         name = "user_conge",

@@ -12,6 +12,7 @@ import tn.esprit.pi_backend.repositories.UserRepository;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 
@@ -47,29 +48,40 @@ public class CongeService implements ICongeService {
 	}
 
 	public Conge createConge(Conge conge) {
-
-		return congeRepository.save(conge);
+		Optional<List<Conge>> optionalConges = Optional.of(
+				congeRepository.findByDateDebutGreaterThanEqualAndDateFinLessThanEqualAndUserId(conge.getDateDebut(),
+						conge.getDateFin(), conge.getUser().getId()));
+		if (optionalConges.get().isEmpty()) {
+			return congeRepository.save(conge);
+		}
+		return null;
 	}
 
 	public Conge updateConge(Long id, Conge congeDetails) {
-		Conge conge = getCongeById(id);
-		if (congeDetails.getDuree() != 0) {
-			conge.setDuree(congeDetails.getDuree());
+		Optional<List<Conge>> optionalConges = Optional
+				.of(congeRepository.findByDateDebutGreaterThanEqualAndDateFinLessThanEqualAndUserId(
+						congeDetails.getDateDebut(), congeDetails.getDateFin(), congeDetails.getUser().getId()));
+		if (optionalConges.get().isEmpty()) {
+			Conge conge = getCongeById(id);
+			if (congeDetails.getDuree() != 0) {
+				conge.setDuree(congeDetails.getDuree());
+			}
+			if (congeDetails.getSoldeConge() != 0) {
+				conge.setSoldeConge(congeDetails.getSoldeConge());
+			}
+			if (congeDetails.getStatus() != null) {
+				conge.setStatus(congeDetails.getStatus());
+			}
+			if (congeDetails.getDateDebut() != null) {
+				conge.setDateDebut(congeDetails.getDateDebut());
+			}
+			if (congeDetails.getDateFin() != null) {
+				conge.setDateFin(congeDetails.getDateFin());
+			}
+			conge.setUser(congeDetails.getUser());
+			return congeRepository.save(conge);
 		}
-		if (congeDetails.getSoldeConge() != 0) {
-			conge.setSoldeConge(congeDetails.getSoldeConge());
-		}
-		if (congeDetails.getStatus() != null) {
-			conge.setStatus(congeDetails.getStatus());
-		}
-		if (congeDetails.getDateDebut() != null) {
-			conge.setDateDebut(congeDetails.getDateDebut());
-		}
-		if (congeDetails.getDateFin() != null) {
-			conge.setDateFin(congeDetails.getDateFin());
-		}
-		conge.setUser(congeDetails.getUser());
-		return congeRepository.save(conge);
+		return null;
 	}
 
 	public void deleteConge(Long id) {

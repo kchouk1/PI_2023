@@ -42,26 +42,39 @@ public class HolidayController {
 
 	@PostMapping("/create")
 	public ResponseEntity<Holiday> createHoliday(@RequestBody Holiday holiday) {
-		return new ResponseEntity<>(holidayRepository.save(holiday), HttpStatus.CREATED);
+		Optional<List<Holiday>> optHoliday = Optional
+				.of(holidayRepository.findAllByEndDateLessThanEqualAndStartDateGreaterThanEqual(holiday.getEndDate(),
+						holiday.getStartDate()));
+		if (optHoliday.get().isEmpty()) {
+			return new ResponseEntity<>(holidayRepository.save(holiday), HttpStatus.CREATED);
+		}
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 
 	@PutMapping("/update/{id}")
 	public ResponseEntity<Holiday> updateHoliday(@PathVariable Long id, @RequestBody Holiday holiday) {
-		Optional<Holiday> originalHoliday = holidayRepository.findById(id);
-		if (originalHoliday.isPresent()) {
-			Holiday holidayUpdate = originalHoliday.get();
-			if (holiday.getName() != null) {
-				holidayUpdate.setName(holiday.getName());
+		Optional<List<Holiday>> optHoliday = Optional
+				.of(holidayRepository.findAllByEndDateLessThanEqualAndStartDateGreaterThanEqual(holiday.getEndDate(),
+						holiday.getStartDate()));
+		if (optHoliday.get().isEmpty()) {
+			Optional<Holiday> originalHoliday = holidayRepository.findById(id);
+			if (originalHoliday.isPresent()) {
+				Holiday holidayUpdate = originalHoliday.get();
+				if (holiday.getName() != null) {
+					holidayUpdate.setName(holiday.getName());
+				}
+				if (holiday.getStartDate() != null) {
+					holidayUpdate.setStartDate(holiday.getStartDate());
+				}
+				if (holiday.getEndDate() != null) {
+					holidayUpdate.setEndDate(holiday.getEndDate());
+				}
+				return new ResponseEntity<>(holidayRepository.save(holidayUpdate), HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
-			if (holiday.getStartDate() != null) {
-				holidayUpdate.setStartDate(holiday.getStartDate());
-			}
-			if (holiday.getEndDate() != null) {
-				holidayUpdate.setEndDate(holiday.getEndDate());
-			}
-			return new ResponseEntity<>(holidayRepository.save(holidayUpdate), HttpStatus.OK);
 		}
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 
 	@DeleteMapping("/delete/{id}")

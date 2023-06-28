@@ -1,6 +1,7 @@
 package tn.esprit.pi_backend.entities;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -23,10 +24,10 @@ public class User {
 
     @Column(name = "username")
     private String username;
-
+    @JsonIgnore
     @Column(name = "password")
     private String password;
-    @Column(name ="email")
+    @Column(name = "email")
     private String email;
     @Column(name = "FirstName")
     private String firstName;
@@ -36,6 +37,7 @@ public class User {
     private String phoneNumber;
     @Column(name = "Adress")
     private String address;
+    private LocalDate dateEmbauche;
 
     private boolean blocked;
 
@@ -43,7 +45,7 @@ public class User {
     private String verificationCode;
     private boolean verified;
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(  name = "user_roles",
+    @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
@@ -134,7 +136,6 @@ public class User {
     }
 
 
-
     public boolean isBlocked() {
         return blocked;
     }
@@ -143,4 +144,22 @@ public class User {
         this.blocked = blocked;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", address='" + address + '\'' +
+                ", blocked=" + blocked +
+                ", verificationCode='" + verificationCode + '\'' +
+                ", verified=" + verified +
+                ", roles=" + roles +
+                ", team=" + team +
+                '}';
+    }
 }

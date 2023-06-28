@@ -35,5 +35,20 @@ public class EmailService implements IEmailService{
         }
     }
 
+    public void sendEmail(String to, String subject, String body) {
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, "UTF-8");
+        try {
+            helper.setFrom("ahmed.kchouk@esprit.tn");
+            helper.setTo(to);
+            helper.setSubject(subject);
+            helper.setText(body, true);
+
+            javaMailSender.send(message);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+    }
+
     }
 

@@ -50,13 +50,19 @@ public class CongeController {
     @PostMapping
     public ResponseEntity<Conge> createConge(@RequestBody Conge conge) {
         Conge createdConge = congeService.createConge(conge);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdConge);
+        if (createdConge != null) {
+        	return ResponseEntity.status(HttpStatus.CREATED).body(createdConge);
+		}
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(createdConge);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Conge> updateConge(@PathVariable Long id, @RequestBody Conge congeDetails) {
         Conge updatedConge = congeService.updateConge(id, congeDetails);
-        return ResponseEntity.ok(updatedConge);
+        if (updatedConge != null) {
+        	return ResponseEntity.status(HttpStatus.OK).body(updatedConge);
+		}
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(updatedConge);
     }
 
     @DeleteMapping("/{id}")

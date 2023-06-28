@@ -3,19 +3,24 @@ package tn.esprit.pi_backend.restControllers;
 import lombok.AllArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import tn.esprit.pi_backend.entities.Role;
 import tn.esprit.pi_backend.entities.User;
+import tn.esprit.pi_backend.enums.ERole;
+import tn.esprit.pi_backend.payload.MessageResponse;
+import tn.esprit.pi_backend.repositories.RoleRepository;
 import tn.esprit.pi_backend.repositories.UserRepository;
 import tn.esprit.pi_backend.service.IUser;
 import tn.esprit.pi_backend.service.UserService;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
+import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 @CrossOrigin(maxAge = 3600)
@@ -31,6 +36,8 @@ public class UserController {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    RoleRepository roleRepository;
 
     @GetMapping("/current")
     public Optional<User> getCurrentUser(Authentication authentication){
@@ -43,10 +50,24 @@ public class UserController {
     
     @Transactional
     @PostMapping("ajouterUser")
-    User ajouterUser(@RequestBody User user){
-        return iUser.ajouterUser(user);
+    ResponseEntity<?> ajouterUser(@RequestBody User user){
+        if (userRepository.existsByUsername(user.getUsername())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Username is already taken!"));
+        }
+        if (userRepository.existsByEmail(user.getEmail())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Email is already in use!"));
+        }
+        Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+        Set<Role> roles = new HashSet<>();
+        roles.add(userRole);
+        user.setRoles(roles);
+        return ResponseEntity.status(HttpStatus.CREATED).body(iUser.ajouterUser(user));
     }
-
 
     @Transactional
     @PutMapping("updateUser/{id}")
@@ -67,8 +88,6 @@ public class UserController {
         return ResponseEntity.ok(unblockedUser);
     }
 
-
-
     @Transactional
     @DeleteMapping("/removeuser/{id}")
     public void removefeedback(@PathVariable("id") long id) {
@@ -76,9 +95,4 @@ public class UserController {
         iUser.removeuser(id);
 
     }
-
-
-
-
-
 }
