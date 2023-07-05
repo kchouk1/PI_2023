@@ -95,83 +95,6 @@ public class CongeService implements ICongeService {
 		congeRepository.deleteById(id);
 	}
 
-//    public Conge createConge(Conge conge) {
-//        if (!isEffectifSuffisant(conge)) {
-//            throw new IllegalArgumentException("L'effectif de l'équipe est insuffisant pour couvrir le travail pendant cette période.");
-//        }
-//
-//        if (hasCongesApprouvesPendantLaPeriode(conge)) {
-//            throw new IllegalArgumentException("D'autres congés ont déjà été approuvés pendant cette période.");
-//        }
-//
-//        if (!hasPrioriteElevee(conge)) {
-//            throw new IllegalArgumentException("La priorité de l'employé est insuffisante pour faire la demande de congé.");
-//        }
-//
-//        if (!isEquilibreCongesMaintenu(conge)) {
-//            throw new IllegalArgumentException("L'équilibre des congés est compromis.");
-//        }
-//
-//        return congeRepository.save(conge);
-//    }
-
-//    private boolean isEffectifSuffisant(Conge conge) {
-//        Team team = teamService.getTeamById(conge.getUser().getTeam().getId());
-//        int effectif = team.getUsers().size();
-//        LocalDate dateDebut = conge.getDateDebut();
-//        LocalDate dateFin = conge.getDateFin();
-//
-//        List<Conge> congésPendantLaPériode = congeRepository.findByDateDebutGreaterThanEqualAndDateFinLessThanEqual(dateDebut, dateFin);
-//        int congésApprouvésPendantLaPériode = congésPendantLaPériode.stream()
-//                .filter(Conge::isApprouve)
-//                .collect(Collectors.toList())
-//                .size();
-//
-//        int effectifDisponible = effectif - congésApprouvésPendantLaPériode;
-//        return effectifDisponible > 0;
-//    }
-
-//    private boolean hasCongesApprouvesPendantLaPeriode(Conge conge) {
-//        LocalDate dateDebut = conge.getDateDebut();
-//        LocalDate dateFin = conge.getDateFin();
-//
-//        List<Conge> congésPendantLaPériode = congeRepository.findByDateDebutGreaterThanEqualAndDateFinLessThanEqual(dateDebut, dateFin);
-//        return congésPendantLaPériode.stream()
-//                .anyMatch(Conge::isApprouve);
-//    }
-
-//    private boolean hasPrioriteElevee(Conge conge) {
-//        User user = conge.getUser();
-//        int prioriteUtilisateur = user.getPriority(); // Supposons que la priorité de l'utilisateur soit stockée dans un attribut "priority"
-//
-//        // Vérifier si la priorité de l'utilisateur est élevée
-//        if (prioriteUtilisateur >= PRIORITE_MINIMALE) { // PRIORITE_MINIMALE représente la priorité minimale pour demander un congé
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
-
-//    private boolean isEquilibreCongesMaintenu(Conge conge) {
-//        Team team = teamService.getTeamById(conge.getUser().getTeam().getId());
-//        int effectif = team.getUsers().size();
-//        LocalDate dateDebut = conge.getDateDebut();
-//        LocalDate dateFin = conge.getDateFin();
-//
-//        List<Conge> congésPendantLaPériode = congeRepository.findByDateDebutGreaterThanEqualAndDateFinLessThanEqual(dateDebut, dateFin);
-//        int congésApprouvésPendantLaPériode = congésPendantLaPériode.stream()
-//                .filter(Conge::isApprouve)
-//                .collect(Collectors.toList())
-//                .size();
-//
-//        int congésRestants = effectif - congésApprouvésPendantLaPériode - 1; // Soustraire 1 pour le congé demandé
-//        return congésRestants >= (effectif / 2); // Par exemple, l'équilibre est maintenu si plus de la moitié des membres peuvent encore prendre des congés
-//    }
-//	public Conge accepterConge(Long congeId) {
-//		Conge conge = getCongeById(congeId);
-//		conge.setStatus(StatusOfDemand.ACCEPTED);
-//		return congeRepository.save(conge);
-//	}
 	public Conge accepterConge(Long congeId) {
 		Conge conge = getCongeById(congeId);
 		conge.setStatus(StatusOfDemand.ACCEPTED);
@@ -204,8 +127,4 @@ public class CongeService implements ICongeService {
 		return null;
 	}
 }
-
-
-
-// ...
 
