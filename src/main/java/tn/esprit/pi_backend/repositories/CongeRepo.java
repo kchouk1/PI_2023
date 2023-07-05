@@ -19,4 +19,5 @@ public interface CongeRepo extends JpaRepository <Conge,Long> {
     List<Conge> findByDateDebutGreaterThanEqualAndDateFinLessThanEqual(LocalDate dateDebut, LocalDate dateFin);
     List<Conge> findByDateDebutGreaterThanEqualAndDateFinLessThanEqualAndUserId(LocalDate dateDebut, LocalDate dateFin, Long userId);
     List<Conge> findByDateDebutGreaterThanEqualAndDateFinLessThanEqualAndUserIdAndStatus(LocalDate dateDebut, LocalDate dateFin, Long userId, StatusOfDemand status);
+    Conge findTopByUserIdOrderByIdDesc(Long userId);
 }

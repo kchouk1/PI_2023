@@ -16,6 +16,8 @@ public interface ICongeService {
     List<Conge> getAllCurrentConges(Long id);
 
     Conge getCongeById(Long id);
+    
+    Conge getLatestUserConge(Long id);
 
     Conge createConge(Conge conge);
 

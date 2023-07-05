@@ -46,6 +46,10 @@ public class CongeService implements ICongeService {
 	public Conge getCongeById(Long id) {
 		return congeRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Conge not found"));
 	}
+	
+	public Conge getLatestUserConge(Long userId) {
+		return congeRepository.findTopByUserIdOrderByIdDesc(userId);
+	}
 
 	public Conge createConge(Conge conge) {
 		Optional<List<Conge>> optionalConges = Optional.of(

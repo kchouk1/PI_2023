@@ -37,7 +37,10 @@ public class WeekEntryController {
 	@PostMapping("/user/{userId}")
 	public ResponseEntity<WeekEntry> addWeekEntry(@RequestBody WeekEntry weekEntry, @PathVariable Long userId) {
 		WeekEntry addedWeekEntry = weekEntryService.addWeekEntry(weekEntry, userId);
-		return new ResponseEntity<>(addedWeekEntry, HttpStatus.CREATED);
+		if (addedWeekEntry != null) {
+			return new ResponseEntity<>(addedWeekEntry, HttpStatus.CREATED);
+		}
+		return new ResponseEntity<>(addedWeekEntry, HttpStatus.BAD_REQUEST);
 	}
 
 	@PutMapping("updatePresence/{id}/user/{userId}")

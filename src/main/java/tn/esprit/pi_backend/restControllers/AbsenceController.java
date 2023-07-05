@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import tn.esprit.pi_backend.entities.Absence;
+import tn.esprit.pi_backend.entities.WeekEntry;
 import tn.esprit.pi_backend.repositories.AbsenceRepository;
 
 @CrossOrigin(maxAge = 3600)
@@ -47,9 +48,21 @@ public class AbsenceController {
 				HttpStatus.OK);
 	}
 
+	@PostMapping("/user/{userId}/range")
+	public ResponseEntity<List<Absence>> getRangeUserAbsence(@PathVariable Long userId,
+			@RequestBody WeekEntry weekEntry) {
+		return new ResponseEntity<>(abscenceRepo.findByDateAbsenceGreaterThanEqualAndDateAbsenceLessThanEqualAndUserId(
+				weekEntry.getStartDate(), weekEntry.getEndDate(), userId), HttpStatus.OK);
+	}
+
 	@PostMapping("/create")
-	public ResponseEntity<Absence> createAbscence(@RequestBody Absence abscence) {
-		return new ResponseEntity<>(abscenceRepo.save(abscence), HttpStatus.CREATED);
+	public ResponseEntity<Absence> createAbscence(@RequestBody Absence absence) {
+		Optional<Absence> optionalAbsence = abscenceRepo.findByDateAbsenceAndUserId(absence.getDateAbsence(),
+				absence.getUser().getId());
+		if (optionalAbsence.isEmpty()) {
+			return new ResponseEntity<>(abscenceRepo.save(absence), HttpStatus.CREATED);
+		}
+		return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 	}
 
 	@PutMapping("/update/{id}")

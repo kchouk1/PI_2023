@@ -38,7 +38,7 @@ public class User {
     @Column(name = "Adress")
     private String address;
     private LocalDate dateEmbauche;
-
+    private LocalDate dateActuelle;
     private boolean blocked;
 
 

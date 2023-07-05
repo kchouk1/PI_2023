@@ -1,5 +1,6 @@
 package tn.esprit.pi_backend.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,18 +24,25 @@ public class WeekEntryService {
 
 	public WeekEntry addWeekEntry(WeekEntry weekEntry, Long userId) {
 		Optional<User> user = userRepository.findById(userId);
+
 		if (user.isPresent()) {
-			weekEntry.setUser(user.get());
+			Optional<List<WeekEntry>> optionalWeeks = Optional
+					.of(weekEntryRepository.findByStartDateGreaterThanEqualAndEndDateLessThanEqualAndUserId(
+							weekEntry.getStartDate(), weekEntry.getEndDate(), userId));
+			if (optionalWeeks.get().isEmpty()) {
+				weekEntry.setUser(user.get());
+				return weekEntryRepository.save(weekEntry);
+			}
 		}
 
-		return weekEntryRepository.save(weekEntry);
+		return null;
 	}
 
 	public WeekEntry updateWeekEntry(Long id, WeekEntry updatedWeekEntry, Long userId) {
 		Optional<User> user = userRepository.findById(userId);
 		WeekEntry existingWeekEntry = weekEntryRepository.findById(id)
 				.orElseThrow(() -> new IllegalArgumentException("Week entry not found"));
-		
+
 		if (user.isPresent()) {
 			existingWeekEntry.setUser(user.get());
 		}

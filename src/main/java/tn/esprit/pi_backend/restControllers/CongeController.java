@@ -46,6 +46,21 @@ public class CongeController {
         Conge conge = congeService.getCongeById(id);
         return ResponseEntity.ok(conge);
     }
+    
+    @GetMapping("/user/{userId}/latest")
+    public ResponseEntity<Conge> getLatestUserConge(@PathVariable Long userId) {
+    	Conge conge = congeService.getLatestUserConge(userId);
+    	return ResponseEntity.ok(conge);
+    }
+    
+    @GetMapping("/user/{userId}/solde")
+    public ResponseEntity<Integer> getUserSoldeConge(@PathVariable Long userId) {
+    	Conge conge = congeService.getLatestUserConge(userId);
+    	if (conge == null) {
+			return ResponseEntity.ok(22);
+		}
+    	return ResponseEntity.ok(conge.getSoldeConge());
+    }
 
     @PostMapping
     public ResponseEntity<Conge> createConge(@RequestBody Conge conge) {
