@@ -39,7 +39,7 @@ public class EmailService implements IEmailService{
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, "UTF-8");
         try {
-            helper.setFrom("ahmed.kchouk@esprit.tn");
+            helper.setFrom("wajdi.hassyaoui@esprit.tn");
             helper.setTo(to);
             helper.setSubject(subject);
             helper.setText(body, true);

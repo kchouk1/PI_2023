@@ -22,6 +22,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 @CrossOrigin(maxAge = 3600)
 @AllArgsConstructor
@@ -67,6 +68,20 @@ public class UserController {
         roles.add(userRole);
         user.setRoles(roles);
         return ResponseEntity.status(HttpStatus.CREATED).body(iUser.ajouterUser(user));
+    }
+
+    @PostMapping("/reset")
+    public ResponseEntity<?> resetPassword(@Valid @RequestBody String email) {
+        User user= userRepository.findByEmail(email);
+        if(user != null) {
+            String otp = userService.generateOTP();
+            user.setPassword(userService.encoder.encode(otp));
+            String subject = "Your HR one-time password (OTP)";
+            String body = "Your OTP is: " + otp;
+            userService.emailService.sendEmail(user.getEmail(), subject, body);
+            return new ResponseEntity<User>(userRepository.save(user), HttpStatus.ACCEPTED);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @Transactional

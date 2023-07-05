@@ -2,11 +2,18 @@ package tn.esprit.pi_backend.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import tn.esprit.pi_backend.entities.User;
 import tn.esprit.pi_backend.repositories.UserRepository;
 
+import javax.validation.Valid;
 import java.nio.charset.Charset;
 import java.util.Random;
 
@@ -15,9 +22,9 @@ import java.util.Random;
 public class UserService implements IUser {
 
     UserRepository userRepository;
-    EmailService emailService;
+    public EmailService emailService;
     @Autowired
-    PasswordEncoder encoder;
+    public PasswordEncoder encoder;
 
     @Override
     public User ajouterUser(User user) {
@@ -67,8 +74,7 @@ public class UserService implements IUser {
         return userRepository.save(user);
     }
 
-
-    private String generateOTP() {
+    public String generateOTP() {
         // Logic to generate OTP
         int leftLimit = 97; // letter 'a'
         int rightLimit = 122; // letter 'z'
