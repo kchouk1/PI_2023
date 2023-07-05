@@ -9,6 +9,9 @@ import tn.esprit.pi_backend.entities.Conge;
 import tn.esprit.pi_backend.entities.StatusOfDemand;
 import tn.esprit.pi_backend.repositories.CongeRepo;
 import tn.esprit.pi_backend.repositories.UserRepository;
+import com.twilio.Twilio;
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.type.PhoneNumber;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -164,10 +167,30 @@ public class CongeService implements ICongeService {
 //        int congésRestants = effectif - congésApprouvésPendantLaPériode - 1; // Soustraire 1 pour le congé demandé
 //        return congésRestants >= (effectif / 2); // Par exemple, l'équilibre est maintenu si plus de la moitié des membres peuvent encore prendre des congés
 //    }
+//	public Conge accepterConge(Long congeId) {
+//		Conge conge = getCongeById(congeId);
+//		conge.setStatus(StatusOfDemand.ACCEPTED);
+//		return congeRepository.save(conge);
+//	}
 	public Conge accepterConge(Long congeId) {
 		Conge conge = getCongeById(congeId);
 		conge.setStatus(StatusOfDemand.ACCEPTED);
-		return congeRepository.save(conge);
+		conge = congeRepository.save(conge);
+
+		// Votre code Twilio pour envoyer un SMS
+		String accountSid = "ACd7086ad292bed93eaae50de57b1684fb";
+		String authToken = "d4702c7e2d3ed6556bc2af3c5b3b49e5";
+
+		Twilio.init(accountSid, authToken);
+		Message message = Message.creator(
+						new PhoneNumber("+21658046046"),  // Remplacez par le numéro de téléphone du destinataire
+						new PhoneNumber("+15416354179"),  // Remplacez par votre numéro de téléphone Twilio
+						"Votre demande de congé a été acceptée. Profitez de votre congé !")
+				.create();
+
+		System.out.println(message.getSid());
+
+		return conge;
 	}
 
 	public Conge refuserConge(Long congeId) {
@@ -181,3 +204,8 @@ public class CongeService implements ICongeService {
 		return null;
 	}
 }
+
+
+
+// ...
+
