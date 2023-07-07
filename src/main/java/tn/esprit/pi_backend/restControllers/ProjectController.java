@@ -8,6 +8,7 @@ import tn.esprit.pi_backend.services.ProjectService;
 
 import java.util.List;
 
+@CrossOrigin(origins = {"http://127.0.0.1:4200","http://localhost:4200"})
 @RestController
 @RequestMapping("/projects")
 public class ProjectController {
@@ -16,32 +17,30 @@ public class ProjectController {
 
     @PostMapping
     public Project createProject(@RequestBody Project project) {
-        return projectService.save(project);
+        return projectService.createProject(project);
     }
 
     @GetMapping("/{id}")
     public Project getProjectById(@PathVariable Long id) {
-        return projectService.findById(id).get();
+        return projectService.getProjectById(id);
     }
 
     @GetMapping
     public List<Project> getAllProjects() {
-        return projectService.findAll();
+        return projectService.getAllProjects();
     }
-/*
     @PutMapping("/{id}")
     public Project updateProject(@PathVariable Long id, @RequestBody Project project) {
-        Project existingProject = projectService.findById(id).get();
+        Project existingProject = projectService.getProjectById(id);
         if (existingProject != null) {
             existingProject.setProjectName(project.getProjectName());
             existingProject.setProjectStatus(project.getProjectStatus());
             return projectService.updateProject(existingProject);
         }
         return null;
-    }*/
-
+    }
     @DeleteMapping("/{id}")
     public void deleteProject(@PathVariable Long id) {
-        projectService.deleteById(id);
+        projectService.deleteProject(id);
     }
 }

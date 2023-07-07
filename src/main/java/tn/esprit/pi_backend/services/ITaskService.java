@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ITaskService {
-    public Task save(Task task);
-    public Optional<Task> findById(Long id);
-    public List<Task> findAll();
-    public void deleteById(Long id);
+    public Task createTask(Task task,Long projectId);
+    public Task getTaskById(Long id);
+    public List<Task> getAllTasks();
+    public Task updateTask(Task task);
+    public void deleteTask(Long id);
+    public List<Task> getAllTasksByProjectId(Long projectId);
 }

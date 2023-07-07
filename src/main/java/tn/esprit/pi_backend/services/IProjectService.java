@@ -6,8 +6,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IProjectService {
-    public Project save(Project project);
-    public Optional<Project> findById(Long id);
-    public void deleteById(Long id);
-    public List<Project> findAll();
+    public Project createProject(Project project);
+    public Project getProjectById(Long id);
+    public List<Project> getAllProjects();
+    public Project updateProject(Project project);
+    public void deleteProject(Long id);
 }
