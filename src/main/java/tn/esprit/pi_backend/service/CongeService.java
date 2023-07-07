@@ -7,13 +7,17 @@ import org.springframework.stereotype.Service;
 import tn.esprit.pi_backend.entities.Conge;
 
 import tn.esprit.pi_backend.entities.StatusOfDemand;
+import tn.esprit.pi_backend.entities.User;
+import tn.esprit.pi_backend.entities.WeekEntry;
 import tn.esprit.pi_backend.repositories.CongeRepo;
 import tn.esprit.pi_backend.repositories.UserRepository;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
+import tn.esprit.pi_backend.repositories.WeekEntryRepository;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,10 +32,16 @@ public class CongeService implements ICongeService {
 	private final UserRepository userRepository;
 	private final TeamService teamService;
 
-	public CongeService(CongeRepo congeRepository, UserRepository userRepository, TeamService teamService) {
+	private final WeekEntryRepository weekEntryRepository;
+
+	private static final double CONGE_PAR_MOIS = 1.5;
+	private static final int HEURES_PAR_JOUR = 8;
+
+	public CongeService(CongeRepo congeRepository, UserRepository userRepository, TeamService teamService , WeekEntryRepository  weekEntryRepository) {
 		this.congeRepository = congeRepository;
 		this.userRepository = userRepository;
 		this.teamService = teamService;
+		this.weekEntryRepository = weekEntryRepository;
 	}
 
 	public List<Conge> getAllConges() {
@@ -89,6 +99,20 @@ public class CongeService implements ICongeService {
 			return congeRepository.save(conge);
 		}
 		return null;
+	}
+	public double calculerSoldeConge(Long userId) {
+		List<WeekEntry> weekEntries = weekEntryRepository.findByUserId(userId);
+		LocalDateTime now = LocalDateTime.now();
+		int heuresTravaillees = 0;
+		for (WeekEntry weekEntry : weekEntries) {
+			if (weekEntry.getEndDate().isBefore(now.toLocalDate())) {
+				heuresTravaillees += weekEntry.getNumberOfHours();
+			}
+		}
+		double joursTravailles = (double) heuresTravaillees / HEURES_PAR_JOUR;
+		long moisTravailles = (long) (joursTravailles / 22);
+		double soldeConge = moisTravailles * CONGE_PAR_MOIS;
+		return soldeConge;
 	}
 
 	public void deleteConge(Long id) {

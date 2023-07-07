@@ -2,6 +2,7 @@ package tn.esprit.pi_backend.service;
 
 
 import tn.esprit.pi_backend.entities.Conge;
+import tn.esprit.pi_backend.entities.User;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ public interface ICongeService {
 
     public Conge ajouterConge(Conge conge);
 
-
+    double calculerSoldeConge(Long userId) ;
     List<Conge> getAllConges();
     
     List<Conge> getAllCurrentConges(Long id);

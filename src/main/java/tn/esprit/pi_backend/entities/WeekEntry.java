@@ -90,4 +90,17 @@ public class WeekEntry {
 	public void setNumberOfHours(int numberOfHours) {
 		this.numberOfHours = numberOfHours;
 	}
+
+    @Override
+    public String toString() {
+        return "WeekEntry{" +
+                "id=" + id +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", description='" + description + '\'' +
+                ", numberOfHours=" + numberOfHours +
+                ", hourEntries=" + hourEntries +
+                ", user=" + user.toString() +
+                '}';
+    }
 }

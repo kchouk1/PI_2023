@@ -2,14 +2,19 @@ package tn.esprit.pi_backend.restControllers;
 
 import java.util.List;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.pi_backend.entities.Conge;
 import tn.esprit.pi_backend.entities.StatusOfDemand;
 
+import tn.esprit.pi_backend.entities.User;
+import tn.esprit.pi_backend.entities.WeekEntry;
 import tn.esprit.pi_backend.repositories.CongeRepo;
 import tn.esprit.pi_backend.repositories.UserRepository;
+import tn.esprit.pi_backend.repositories.WeekEntryRepository;
+import tn.esprit.pi_backend.service.CongeService;
 import tn.esprit.pi_backend.service.ICongeService;
 
 import javax.persistence.EntityNotFoundException;
@@ -23,9 +28,10 @@ public class CongeController {
 
 
    CongeRepo congeRepo ;
+   @Autowired
     UserRepository userRepository;
     private final ICongeService congeService;
-
+    WeekEntryRepository weekEntryRepository;
 
     public CongeController(ICongeService congeService) {
         this.congeService = congeService;
@@ -53,14 +59,7 @@ public class CongeController {
     	return ResponseEntity.ok(conge);
     }
     
-    @GetMapping("/user/{userId}/solde")
-    public ResponseEntity<Integer> getUserSoldeConge(@PathVariable Long userId) {
-    	Conge conge = congeService.getLatestUserConge(userId);
-    	if (conge == null) {
-			return ResponseEntity.ok(22);
-		}
-    	return ResponseEntity.ok(conge.getSoldeConge());
-    }
+
 
     @PostMapping
     public ResponseEntity<Conge> createConge(@RequestBody Conge conge) {
@@ -96,6 +95,12 @@ public class CongeController {
     public ResponseEntity<Conge> refuserConge(@PathVariable Long id) {
         Conge refusedConge = congeService.refuserConge(id);
         return ResponseEntity.ok(refusedConge);
+    }
+
+    @GetMapping("/user/{userId}/soldess")
+    public ResponseEntity<Double> getUserSoldeConge(@PathVariable Long userId) {
+            double soldeConge = congeService.calculerSoldeConge(userId);
+            return ResponseEntity.ok(soldeConge);
     }
 
 }
