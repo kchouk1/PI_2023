@@ -1,9 +1,10 @@
-package tn.esprit.pi_backend.service;
+package tn.esprit.pi_backend.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tn.esprit.pi_backend.entities.Project;
 import tn.esprit.pi_backend.repositories.ProjectRepository;
+import tn.esprit.pi_backend.service.IProjectService;
 
 import java.util.List;
 import java.util.Optional;

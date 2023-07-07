@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.*;
 import tn.esprit.pi_backend.entities.Project;
 import tn.esprit.pi_backend.service.IProjectService;
 
-
 import java.util.List;
 
 @CrossOrigin(origins = {"http://127.0.0.1:4200","http://localhost:4200"})

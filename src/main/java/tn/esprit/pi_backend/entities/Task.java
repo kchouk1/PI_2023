@@ -30,5 +30,11 @@ public class Task {
     private Project project;
 
     // Getters and setters
+    public class DeadlineVerifier {
+        public boolean isDeadlineClose(LocalDate deadline) {
+            LocalDate currentDate = LocalDate.now();
+            return currentDate.isAfter(deadline);
+        }
+    }
 }
 

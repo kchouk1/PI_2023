@@ -11,4 +11,6 @@ import java.util.List;
 @Repository
 public interface FormationRepository extends CrudRepository<Formation, Long> {
     List<Formation> findFormationByFormationName(String formationName);
+    //List<String> findFormationByMembers();
+
 }

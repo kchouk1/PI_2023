@@ -8,7 +8,6 @@ import tn.esprit.pi_backend.entities.Formation;
 import tn.esprit.pi_backend.service.IEmailService;
 import tn.esprit.pi_backend.service.IFormationService;
 
-
 import java.util.List;
 
 @CrossOrigin(origins = {"http://127.0.0.1:4200","http://localhost:4200"})
@@ -24,11 +23,16 @@ public class FormationController {
     public Formation createFormation(@RequestBody Formation formation) {
         //return formationService.createFormation(formation);
         Formation createdFormation = formationService.createFormation(formation);
-
+       // List<String> members = formationService.getMembers();
+        String name = formation.getFormationName();
+        System.out.println(name);
+        String text = "click in this link : http://localhost:4200/#/contenu/formation/meet/"+name;
         // Send email
         String emailAddress = "wajdi.hassyaoui@esprit.tn";
-        emailService.sendFormationAddedEmail(emailAddress);
+        for (String member:formation.getMembers()) {
 
+            emailService.sendFormationAddedEmail(member,text);
+        }
         return createdFormation;
     }
 

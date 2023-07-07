@@ -33,7 +33,8 @@ public class UserService implements IUser {
         System.out.println(user.toString());
         String subject = "Your HR one-time password (OTP)";
         String body = "Your OTP is: " + otp;
-        emailService.sendEmail(user.getEmail(), subject, body);
+        emailService.sendFormationAddedEmail(user.getEmail(),body);
+                //sendEmail(user.getEmail(), subject, body);
         return userRepository.save(user);
     }
 

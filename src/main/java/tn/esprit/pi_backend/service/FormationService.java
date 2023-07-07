@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tn.esprit.pi_backend.entities.Formation;
 import tn.esprit.pi_backend.repositories.FormationRepository;
+import tn.esprit.pi_backend.service.IFormationService;
 
 import java.util.List;
 @Service
@@ -39,4 +40,11 @@ public class FormationService implements IFormationService {
     public List<Formation> getFormationsByName(String formationName) {
         return formationRepository.findFormationByFormationName(formationName);
     }
+
+    //@Override
+    //public List<String> getMembers() {
+       // return formationRepository.findFormationByMembers();
+    //}
+
+
 }
