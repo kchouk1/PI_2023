@@ -48,7 +48,9 @@ public class UserService implements IUser {
 
         return user;
     }
-
+    public long getUserCount() {
+        return userRepository.count();
+    }
     @Override
     public User removeuser(Long id) {
 

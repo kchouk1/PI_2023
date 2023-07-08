@@ -48,6 +48,12 @@ public class UserController {
     public List<User> getAllUsers(){
         return userRepository.findAll();
     }
+
+
+    @GetMapping("/count")
+    public long getUserCount() {
+        return userService.getUserCount();
+    }
     
     @Transactional
     @PostMapping("ajouterUser")
