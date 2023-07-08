@@ -12,6 +12,7 @@ public interface ICongeService {
     public Conge ajouterConge(Conge conge);
 
     double calculerSoldeConge(Long userId) ;
+    public int calculerDureeConge(Conge conge);
     List<Conge> getAllConges();
     
     List<Conge> getAllCurrentConges(Long id);

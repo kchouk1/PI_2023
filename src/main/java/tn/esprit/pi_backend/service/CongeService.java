@@ -17,6 +17,7 @@ import tn.esprit.pi_backend.repositories.WeekEntryRepository;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -71,6 +72,10 @@ public class CongeService implements ICongeService {
 			return congeRepository.save(conge);
 		}
 		return null;
+	}
+
+	public int calculerDureeConge(Conge conge) {
+		return (int) ChronoUnit.DAYS.between(conge.getDateDebut(), conge.getDateFin());
 	}
 
 	public Conge updateConge(Long id, Conge congeDetails) {

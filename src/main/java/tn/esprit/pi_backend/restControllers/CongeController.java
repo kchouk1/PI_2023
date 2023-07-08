@@ -83,7 +83,11 @@ public class CongeController {
         Conge refusedConge = congeService.refuserConge(id);
         return ResponseEntity.ok(refusedConge);
     }
-
+    @GetMapping("/{id}/duree")
+    public int calculerDureeConge(@PathVariable Long id) {
+        Conge conge = congeService.getCongeById(id);
+        return congeService.calculerDureeConge(conge);
+    }
     @GetMapping("/user/{userId}/soldess")
     public ResponseEntity<Double> getUserSoldeConge(@PathVariable Long userId) {
         System.out.println(userId);
