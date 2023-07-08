@@ -1,25 +1,14 @@
 package tn.esprit.pi_backend.restControllers;
 
 import java.util.List;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.pi_backend.entities.Conge;
-import tn.esprit.pi_backend.entities.StatusOfDemand;
-
-import tn.esprit.pi_backend.entities.User;
-import tn.esprit.pi_backend.entities.WeekEntry;
-import tn.esprit.pi_backend.repositories.CongeRepo;
 import tn.esprit.pi_backend.repositories.UserRepository;
-import tn.esprit.pi_backend.repositories.WeekEntryRepository;
-import tn.esprit.pi_backend.service.CongeService;
-import tn.esprit.pi_backend.service.ICongeService;
 
-import javax.persistence.EntityNotFoundException;
-import javax.validation.Valid;
-import java.util.Optional;
+import tn.esprit.pi_backend.service.ICongeService;
 
 @CrossOrigin(maxAge = 3600)
 @RestController
@@ -27,11 +16,9 @@ import java.util.Optional;
 public class CongeController {
 
 
-   CongeRepo congeRepo ;
    @Autowired
     UserRepository userRepository;
     private final ICongeService congeService;
-    WeekEntryRepository weekEntryRepository;
 
     public CongeController(ICongeService congeService) {
         this.congeService = congeService;
@@ -99,7 +86,8 @@ public class CongeController {
 
     @GetMapping("/user/{userId}/soldess")
     public ResponseEntity<Double> getUserSoldeConge(@PathVariable Long userId) {
-            double soldeConge = congeService.calculerSoldeConge(userId);
+        System.out.println(userId);
+        double soldeConge = congeService.calculerSoldeConge(userId);
             return ResponseEntity.ok(soldeConge);
     }
 

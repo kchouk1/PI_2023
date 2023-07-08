@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import tn.esprit.pi_backend.entities.Conge;
 
 import tn.esprit.pi_backend.entities.StatusOfDemand;
-import tn.esprit.pi_backend.entities.User;
 import tn.esprit.pi_backend.entities.WeekEntry;
 import tn.esprit.pi_backend.repositories.CongeRepo;
 import tn.esprit.pi_backend.repositories.UserRepository;
@@ -104,9 +103,11 @@ public class CongeService implements ICongeService {
 		List<WeekEntry> weekEntries = weekEntryRepository.findByUserId(userId);
 		LocalDateTime now = LocalDateTime.now();
 		int heuresTravaillees = 0;
+
 		for (WeekEntry weekEntry : weekEntries) {
 			if (weekEntry.getEndDate().isBefore(now.toLocalDate())) {
 				heuresTravaillees += weekEntry.getNumberOfHours();
+
 			}
 		}
 		double joursTravailles = (double) heuresTravaillees / HEURES_PAR_JOUR;
