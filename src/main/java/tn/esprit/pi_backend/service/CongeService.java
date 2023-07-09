@@ -80,9 +80,9 @@ public class CongeService implements ICongeService {
 				}
 			}
 			if (nombreCongesSimultanes >= capaciteMaximaleChevauchement) {
-				return false; // Le nombre maximal de congés simultanés est atteint
+				return true; // Le nombre maximal de congés simultanés est atteint
 			}
-			return true; // Toutes les règles sont respectées
+			return false; // Toutes les règles sont respectées
 		}
 		return false;
 	}
