@@ -27,6 +27,7 @@ public class Team {
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> users;
 
+
 	public Long getId() {
 		return id;
 	}

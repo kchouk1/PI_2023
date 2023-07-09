@@ -3,6 +3,7 @@ package tn.esprit.pi_backend.repositories;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import tn.esprit.pi_backend.entities.Team;
 import tn.esprit.pi_backend.entities.User;
 
 import java.util.List;
@@ -16,6 +17,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User findByEmail(String email);
     List<User> findAll();
     Optional<User> findById(Id id);
+
+
     long count();
 
 

@@ -45,8 +45,17 @@ public class CongeController {
     	Conge conge = congeService.getLatestUserConge(userId);
     	return ResponseEntity.ok(conge);
     }
-    
 
+    @PostMapping("/verifier-regles-conges")
+    public ResponseEntity<Boolean> verifierReglesConges(@RequestBody Conge nouvelleDemandeConge) {
+        boolean reglesRespectees = congeService.verifierReglesConges(nouvelleDemandeConge);
+
+        if (reglesRespectees) {
+            return ResponseEntity.ok(true);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
+        }
+    }
 
     @PostMapping
     public ResponseEntity<Conge> createConge(@RequestBody Conge conge) {

@@ -4,20 +4,17 @@ import java.time.LocalDate;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import tn.esprit.pi_backend.entities.Conge;
+import tn.esprit.pi_backend.entities.*;
 
-import tn.esprit.pi_backend.entities.StatusOfDemand;
-import tn.esprit.pi_backend.entities.WeekEntry;
-import tn.esprit.pi_backend.repositories.CongeRepo;
-import tn.esprit.pi_backend.repositories.UserRepository;
+import tn.esprit.pi_backend.repositories.*;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
-import tn.esprit.pi_backend.repositories.WeekEntryRepository;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,15 +30,19 @@ public class CongeService implements ICongeService {
 	private final TeamService teamService;
 
 	private final WeekEntryRepository weekEntryRepository;
+	private ReglesCongesRepository reglesCongesRepository;
+	private final TeamRepository teamRepository ;
 
 	private static final double CONGE_PAR_MOIS = 1.5;
 	private static final int HEURES_PAR_JOUR = 8;
 
-	public CongeService(CongeRepo congeRepository, UserRepository userRepository, TeamService teamService , WeekEntryRepository  weekEntryRepository) {
+	public CongeService(CongeRepo congeRepository, UserRepository userRepository, TeamService teamService , WeekEntryRepository  weekEntryRepository, ReglesCongesRepository reglesCongesRepository, TeamRepository teamRepository) {
 		this.congeRepository = congeRepository;
 		this.userRepository = userRepository;
 		this.teamService = teamService;
 		this.weekEntryRepository = weekEntryRepository;
+		this.reglesCongesRepository = reglesCongesRepository;
+		this.teamRepository = teamRepository;
 	}
 
 	public List<Conge> getAllConges() {
@@ -59,7 +60,33 @@ public class CongeService implements ICongeService {
 	public Conge getCongeById(Long id) {
 		return congeRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Conge not found"));
 	}
-	
+
+	public boolean verifierReglesConges(Conge nouvelleDemandeConge) {
+		Optional<Team> team = teamRepository.findByUsers(nouvelleDemandeConge.getUser());
+		if (team.isPresent()){
+			List<Conge> congésEquipe = new ArrayList<>();
+			for (User user : team.get().getUsers()) {
+				congésEquipe.addAll(congeRepository.findByUser(user));
+			}
+			int nombreCongesSimultanes = 0;
+			int capaciteMaximaleChevauchement = reglesCongesRepository.findByType("chevauchement_conges").getValeur();
+			for (Conge congé : congésEquipe) {
+				if (congé.getId().equals(nouvelleDemandeConge.getId())) {
+					continue; // Ignorer la comparaison avec le même congé
+				}
+				if (nouvelleDemandeConge.getDateDebut().isBefore(congé.getDateFin())
+						&& congé.getDateDebut().isBefore(nouvelleDemandeConge.getDateFin())) {
+					nombreCongesSimultanes++;
+				}
+			}
+			if (nombreCongesSimultanes >= capaciteMaximaleChevauchement) {
+				return false; // Le nombre maximal de congés simultanés est atteint
+			}
+			return true; // Toutes les règles sont respectées
+		}
+		return false;
+	}
+
 	public Conge getLatestUserConge(Long userId) {
 		return congeRepository.findTopByUserIdOrderByIdDesc(userId);
 	}

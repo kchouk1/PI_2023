@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ICongeService {
 
-
+    boolean verifierReglesConges(Conge nouvelleDemandeConge  ) ;
     public Conge ajouterConge(Conge conge);
 
     double calculerSoldeConge(Long userId) ;

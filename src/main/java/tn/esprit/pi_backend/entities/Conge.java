@@ -35,5 +35,19 @@ public class Conge implements Serializable {
         inverseJoinColumns = @JoinColumn(name = "user_id"))
 private User user;
 
+    public LocalDate getDateDebut() {
+        return dateDebut;
+    }
 
+    public void setDateDebut(LocalDate dateDebut) {
+        this.dateDebut = dateDebut;
+    }
+
+    public LocalDate getDateFin() {
+        return dateFin;
+    }
+
+    public void setDateFin(LocalDate dateFin) {
+        this.dateFin = dateFin;
+    }
 }
