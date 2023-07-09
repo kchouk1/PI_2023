@@ -30,4 +30,6 @@ public interface ICongeService {
     Conge refuserConge(Long id);
 
     Conge updateConge(Long id, Conge congeDetails);
+
+    long getCongeCount();
 }

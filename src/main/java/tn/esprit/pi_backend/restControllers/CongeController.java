@@ -94,5 +94,9 @@ public class CongeController {
         double soldeConge = congeService.calculerSoldeConge(userId);
             return ResponseEntity.ok(soldeConge);
     }
+    @GetMapping("/count")
+    public long getUserCount() {
+        return congeService.getCongeCount();
+    }
 
 }

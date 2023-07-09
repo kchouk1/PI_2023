@@ -74,6 +74,10 @@ public class CongeService implements ICongeService {
 		return null;
 	}
 
+	public long getCongeCount() {
+		return congeRepository.count();
+	}
+
 	public int calculerDureeConge(Conge conge) {
 		return (int) ChronoUnit.DAYS.between(conge.getDateDebut(), conge.getDateFin());
 	}
