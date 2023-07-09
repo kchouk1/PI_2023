@@ -17,8 +17,8 @@ public class EmailService implements IEmailService{
     @Autowired
     private JavaMailSender javaMailSender;
 
-    public void sendFormationAddedEmail(String to,String body) {
-        String subject = "Formation added";
+    public void sendFormationAddedEmail(String to,String subject,String body) {
+        //String subject = "Formation added";
         //String body = "A new formation has been added.";
 
         MimeMessage message = javaMailSender.createMimeMessage();

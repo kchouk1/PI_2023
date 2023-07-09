@@ -30,9 +30,10 @@ public class FormationController {
         String text = "click in this link : http://localhost:4200/#/contenu/formation/meet/"+name;
         // Send email
         String emailAddress = "wajdi.hassyaoui@esprit.tn";
+        String subject="Formation Added";
         for (String member:formation.getMembers()) {
 
-            emailService.sendFormationAddedEmail(member,text);
+            emailService.sendFormationAddedEmail(member,subject,text);
         }
         return createdFormation;
     }

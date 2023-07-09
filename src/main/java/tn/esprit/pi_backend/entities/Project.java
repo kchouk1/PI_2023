@@ -28,4 +28,9 @@ public class Project {
     // Getters and setters
     @ManyToMany
     private List<Formation> formations=new ArrayList<>();
+    @ElementCollection
+    private List<String> members = new ArrayList<>();
+    public List<String> getAllMembers() {
+        return members;
+    }
 }

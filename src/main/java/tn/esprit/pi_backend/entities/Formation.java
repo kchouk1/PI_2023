@@ -30,11 +30,11 @@ public class Formation {
     @ManyToMany(mappedBy = "formations")
     private List<Project> projects = new ArrayList<>();
 
-    @ElementCollection
+    /*@ElementCollection
     private List<String> members = new ArrayList<>();
     public List<String> getAllMembers() {
         return members;
-    }
+    }*/
 
     // Getters and setters
 }

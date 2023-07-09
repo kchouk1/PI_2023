@@ -6,7 +6,9 @@ import tn.esprit.pi_backend.entities.Project;
 import tn.esprit.pi_backend.entities.Task;
 import tn.esprit.pi_backend.repositories.TaskRepository;
 
+import javax.transaction.Transactional;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -16,6 +18,7 @@ public class TaskService implements ITaskService{
 
     @Autowired
     private IProjectService projectService;
+
 
     @Override
     public Task createTask(Task task, Long projectId) {
@@ -51,5 +54,28 @@ public class TaskService implements ITaskService{
     public List<Task> getAllTasksByProjectId(Long projectId) {
         return taskRepository.findAllByProjectId(projectId);
     }
+
+    @Override
+    @Transactional
+    public Task updateTaskStatus(Long id) {
+        Optional<Task> optionalTask = taskRepository.findById(id);
+        if (optionalTask.isPresent()) {
+            Task task = optionalTask.get();
+            task.setTaskStatus("Done");
+            try {
+                Task updatedTask = taskRepository.save(task);
+                System.out.println("Task with ID " + updatedTask.getId() + " has been updated. New status: " + updatedTask.getTaskStatus());
+                return updatedTask;
+            } catch (Exception e) {
+                System.out.println("Failed to update task with ID: " + task.getId());
+                e.printStackTrace();
+                throw new RuntimeException("Failed to update task status");
+            }
+        } else {
+            throw new NoSuchElementException("Task not found");
+        }
+    }
+
+
 
 }
