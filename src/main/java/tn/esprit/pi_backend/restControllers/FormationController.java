@@ -27,7 +27,15 @@ public class FormationController {
        // List<String> members = formationService.getMembers();
         String name = formation.getFormationName();
         System.out.println(name);
-        String text = "click in this link : http://localhost:4200/#/contenu/formation/meet/"+name;
+        String text = "<p>🌟 New Formation Alert! 🌟</p>" +
+                "<p>Dear team members,</p>" +
+                "<p>We are excited to announce a new formation named :"+name+" that has been added to our learning platform. This formation provides valuable insights and knowledge on various topics.</p>" +
+                "<p>To access the formation, please click on the link below:</p>" +
+                "<p><a href='http://localhost:4200/#/contenu/formation/meet/" + name + "'>Access Formation</a></p>" +
+                "<p>Make the most out of this opportunity to enhance your skills and stay ahead in your professional journey. If you have any questions or need assistance, feel free to reach out to us.</p>" +
+                "<p>Thank you for your dedication and commitment to continuous learning!</p>" +
+                "<p>Best regards,</p>" +
+                "<p>Your Learning Team 🚀</p>";;
         // Send email
         String emailAddress = "wajdi.hassyaoui@esprit.tn";
         String subject="Formation Added";

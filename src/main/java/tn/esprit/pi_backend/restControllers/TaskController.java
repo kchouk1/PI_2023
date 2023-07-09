@@ -53,12 +53,19 @@ public class TaskController {
         Task existingTask = taskService.getTaskById(id);
         if (existingTask != null) {
             existingTask.setTaskStatus("TimeOut");
-            String text = "tache hethi mat5dmetich"+existingTask.getTaskName();
-            String subject ="DEADLINE To Day";
+            String text = "⚠️ Deadline Alert! ⚠️\n\n"
+                    + "Dear Responsible,\n\n"
+                    + "We regret to inform you that the following task has expired:\n"
+                    + "Task Name: " + existingTask.getTaskName() + "\n"
+                    + "Task Description: !!!!!!!!!!!!!!!!!!!!! "  + "\n"
+                    + "Please take immediate action to address this matter.\n\n"
+                    + "Thank you for your attention.\n"
+                    + "Best regards,\n"
+                    + "Your Team 😔";
+            String subject = "Task Deadline Expired";
             String emailAddress = "wajdi.hassyaoui@esprit.tn";
-            emailService.sendFormationAddedEmail(emailAddress,subject,text);
+            emailService.sendFormationAddedEmail(emailAddress, subject, text);
             return taskService.updateTask(existingTask);
-
         }
         return null;
     }
