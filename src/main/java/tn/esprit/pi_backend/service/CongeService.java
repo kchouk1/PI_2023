@@ -13,6 +13,7 @@ import com.twilio.type.PhoneNumber;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -80,9 +81,11 @@ public class CongeService implements ICongeService {
 					nombreCongesSimultanes++;
 				}
 			}
-			System.out.println(nombreCongesSimultanes );
-			System.out.println( ">=" );
-			System.out.println(capaciteMaximaleChevauchement );
+			LocalDate currentDate = LocalDate.now();
+			Period period = Period.between(currentDate, nouvelleDemandeConge.getDateDebut());
+			if(period.getDays()< reglesCongesRepository.findByType("date_preavis").getValeur() || period.getMonths()<0) {
+				return false;
+			}
 
 			if (nombreCongesSimultanes >= capaciteMaximaleChevauchement) {
 				return false;
@@ -100,6 +103,8 @@ public class CongeService implements ICongeService {
 		Optional<List<Conge>> optionalConges = Optional.of(
 				congeRepository.findByDateDebutGreaterThanEqualAndDateFinLessThanEqualAndUserId(conge.getDateDebut(),
 						conge.getDateFin(), conge.getUser().getId()));
+
+
 		if (optionalConges.isPresent() && optionalConges.get().isEmpty()) {
 			boolean reglesCongesValidees = verifierReglesConges(conge);
 			System.out.println(reglesCongesValidees);
@@ -107,8 +112,8 @@ public class CongeService implements ICongeService {
 				System.out.println(reglesCongesValidees);
 				return congeRepository.save(conge);
 			}
-
 		}
+
 		return null;
 	}
 
@@ -148,6 +153,7 @@ public class CongeService implements ICongeService {
 		}
 		return null;
 	}
+
 	public double calculerSoldeConge(Long userId) {
 		List<WeekEntry> weekEntries = weekEntryRepository.findByUserId(userId);
 		LocalDateTime now = LocalDateTime.now();
