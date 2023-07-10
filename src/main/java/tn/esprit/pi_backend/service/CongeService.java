@@ -43,6 +43,7 @@ public class CongeService implements ICongeService {
 		this.weekEntryRepository = weekEntryRepository;
 		this.reglesCongesRepository = reglesCongesRepository;
 		this.teamRepository = teamRepository;
+
 	}
 
 	public List<Conge> getAllConges() {
@@ -79,10 +80,14 @@ public class CongeService implements ICongeService {
 					nombreCongesSimultanes++;
 				}
 			}
+			System.out.println(nombreCongesSimultanes );
+			System.out.println( ">=" );
+			System.out.println(capaciteMaximaleChevauchement );
+
 			if (nombreCongesSimultanes >= capaciteMaximaleChevauchement) {
-				return true; // Le nombre maximal de congés simultanés est atteint
+				return false;
 			}
-			return false; // Toutes les règles sont respectées
+			return true;
 		}
 		return false;
 	}
@@ -95,8 +100,14 @@ public class CongeService implements ICongeService {
 		Optional<List<Conge>> optionalConges = Optional.of(
 				congeRepository.findByDateDebutGreaterThanEqualAndDateFinLessThanEqualAndUserId(conge.getDateDebut(),
 						conge.getDateFin(), conge.getUser().getId()));
-		if (optionalConges.get().isEmpty()) {
-			return congeRepository.save(conge);
+		if (optionalConges.isPresent() && optionalConges.get().isEmpty()) {
+			boolean reglesCongesValidees = verifierReglesConges(conge);
+			System.out.println(reglesCongesValidees);
+			if (reglesCongesValidees) {
+				System.out.println(reglesCongesValidees);
+				return congeRepository.save(conge);
+			}
+
 		}
 		return null;
 	}
@@ -182,7 +193,22 @@ public class CongeService implements ICongeService {
 	public Conge refuserConge(Long congeId) {
 		Conge conge = getCongeById(congeId);
 		conge.setStatus(StatusOfDemand.REJECTED);
-		return congeRepository.save(conge);
+		conge = congeRepository.save(conge);
+
+		// Votre code Twilio pour envoyer un SMS
+		String accountSid = "ACd7086ad292bed93eaae50de57b1684fb";
+		String authToken = "d4702c7e2d3ed6556bc2af3c5b3b49e5";
+
+		Twilio.init(accountSid, authToken);
+		Message message = Message.creator(
+						new PhoneNumber("+21658046046"),  // Remplacez par le numéro de téléphone du destinataire
+						new PhoneNumber("+15416354179"),  // Remplacez par votre numéro de téléphone Twilio
+						"Votre demande de congé a été Refusé !")
+				.create();
+
+		System.out.println(message.getSid());
+
+		return conge;
 	}
 
 	@Override
