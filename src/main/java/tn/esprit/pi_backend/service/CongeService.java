@@ -36,6 +36,7 @@ public class CongeService implements ICongeService {
 
 	private static final double CONGE_PAR_MOIS = 1.5;
 	private static final int HEURES_PAR_JOUR = 8;
+	private static int DURRE = 0;
 
 	public CongeService(CongeRepo congeRepository, UserRepository userRepository, TeamService teamService , WeekEntryRepository  weekEntryRepository, ReglesCongesRepository reglesCongesRepository, TeamRepository teamRepository) {
 		this.congeRepository = congeRepository;
@@ -110,6 +111,7 @@ public class CongeService implements ICongeService {
 			System.out.println(reglesCongesValidees);
 			if (reglesCongesValidees) {
 				System.out.println(reglesCongesValidees);
+				conge.setDuree(calculerDureeConge( conge));
 				return congeRepository.save(conge);
 			}
 		}
@@ -124,7 +126,19 @@ public class CongeService implements ICongeService {
 
 
 	public int calculerDureeConge(Conge conge) {
-		return (int) ChronoUnit.DAYS.between(conge.getDateDebut(), conge.getDateFin());
+		 DURRE =(int) ChronoUnit.DAYS.between(conge.getDateDebut(), conge.getDateFin());
+		 if(DURRE == 0){
+			 DURRE=1;
+			 System.out.println(DURRE);
+
+			 return DURRE;
+		 }
+		 else {
+			 System.out.println(DURRE);
+
+			 return DURRE;
+		 }
+
 	}
 
 	public Conge updateConge(Long id, Conge congeDetails) {
