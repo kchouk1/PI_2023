@@ -72,7 +72,7 @@ public class CongeService implements ICongeService {
 				congésEquipe.addAll(congeRepository.findByUser(user));
 			}
 			int nombreCongesSimultanes = 0;
-			int capaciteMaximaleChevauchement = reglesCongesRepository.findByType("chevauchement_conges").getValeur();
+			int capaciteMaximaleVerification = reglesCongesRepository.findByType("verification_la_meme_date").getValeur();
 			for (Conge congé : congésEquipe) {
 				if (congé.getId().equals(nouvelleDemandeConge.getId())) {
 					continue; // Ignorer la comparaison avec le même congé
@@ -88,7 +88,7 @@ public class CongeService implements ICongeService {
 				return false;
 			}
 
-			if (nombreCongesSimultanes >= capaciteMaximaleChevauchement) {
+			if (nombreCongesSimultanes >= capaciteMaximaleVerification) {
 				return false;
 			}
 			return true;
