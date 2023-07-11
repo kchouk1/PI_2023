@@ -121,14 +121,10 @@ public class UserController {
     @Transactional
     @PutMapping("updateUserPassword/{id}")
     public User updateUserPassword(@PathVariable(value = "id", required = false) final Long id, @RequestBody String password) {
-        //check if exist with id
             User user = userRepository.findById(id).get();
-            // check password lenghth && not null
             user.setPassword(new BCryptPasswordEncoder().encode(password));
             User result = userRepository.save(user);
             return result;
-
-
     }
 
 
