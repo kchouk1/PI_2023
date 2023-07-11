@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.pi_backend.entities.Role;
 import tn.esprit.pi_backend.entities.User;
@@ -94,9 +95,42 @@ public class UserController {
     @Transactional
     @PutMapping("updateUser/{id}")
     public User updateUser(@PathVariable(value = "id", required = false) final Long id, @RequestBody User user) {
-    	User result = userRepository.save(user);
-        return result;
+        System.out.println("password is : "+user.getPassword());
+
+        if(user.getPassword() == null || user.getPassword().isEmpty()){
+
+            User userTMP = userRepository.findByUsername(user.getUsername()).get();
+            user.setPassword(userTMP.getPassword());
+    	    User result = userRepository.save(user);
+            System.out.println("password null");
+            return result;
+
+        }
+        else{
+            user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+
+            User result = userRepository.save(user);
+            System.out.println("password nottt null");
+
+            return result;
+
+        }
     }
+
+
+    @Transactional
+    @PutMapping("updateUserPassword/{id}")
+    public User updateUserPassword(@PathVariable(value = "id", required = false) final Long id, @RequestBody String password) {
+        //check if exist with id
+            User user = userRepository.findById(id).get();
+            // check password lenghth && not null
+            user.setPassword(new BCryptPasswordEncoder().encode(password));
+            User result = userRepository.save(user);
+            return result;
+
+
+    }
+
 
     @PutMapping("/{userId}/block")
     public ResponseEntity<User> blockUser(@PathVariable Long userId) {
