@@ -26,7 +26,7 @@ public class FormationController {
        // List<String> members = formationService.getMembers();
         String name = formation.getFormationName();
         System.out.println(name);
-        String text = "click in this link : http://localhost:4200/#/contenu/formation/meet/"+name;
+        String text = "click in this link : https://meet.jit.si/"+name;
         // Send email
         String emailAddress = "wajdi.hassyaoui@esprit.tn";
         for (String member:formation.getMembers()) {

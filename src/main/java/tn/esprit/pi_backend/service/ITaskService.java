@@ -11,4 +11,7 @@ public interface ITaskService {
     public Task updateTask(Task task);
     public void deleteTask(Long id);
     public List<Task> getAllTasksByProjectId(Long projectId);
+    public Task updateTaskStatus(Long id);
+    //public Task updateTaskStatusToTimeOut(Long id);
+    int countTasksByStatus(String taskStatus);
 }

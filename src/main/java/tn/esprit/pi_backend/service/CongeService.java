@@ -71,6 +71,14 @@ public class CongeService implements ICongeService {
 			for (User user : team.get().getUsers()) {
 				congésEquipe.addAll(congeRepository.findByUser(user));
 			}
+
+			int nombreCongesConsecutifsMax = reglesCongesRepository.findByType("rotation_conges").getValeur();
+			Period pp = Period.between( nouvelleDemandeConge.getDateDebut() ,nouvelleDemandeConge.getDateFin() );
+			 System.out.println(nombreCongesConsecutifsMax);
+			 System.out.println("======");
+			System.out.println(pp.getDays());
+
+
 			int nombreCongesSimultanes = 0;
 			int capaciteMaximaleVerification = reglesCongesRepository.findByType("verification_la_meme_date").getValeur();
 			for (Conge congé : congésEquipe) {
@@ -119,6 +127,19 @@ public class CongeService implements ICongeService {
 		return null;
 	}
 
+	//int membresEquipe = UserRepository.countByEquipe(nouvelleDemandeConge.getEquipe());
+	//int nombreCongesConsecutifsMax = reglesCongesRepository.findByType("rotation_conges").getValeur();
+//
+//	int nombreCongesConsecutifs = congeRepository.countCongesConsecutifs(nouvelleDemandeConge.getDemandeur().getId());
+//
+//        if (nombreCongesConsecutifs >= nombreCongesConsecutifsMax) {
+//		return false; // Le quota maximum de congés consécutifs est atteint
+//	}
+
+
+
+
+
 	public long getCongeCount() {
 		return congeRepository.count();
 	}
@@ -129,7 +150,7 @@ public class CongeService implements ICongeService {
 		 DURRE =(int) ChronoUnit.DAYS.between(conge.getDateDebut(), conge.getDateFin());
 		 if(DURRE == 0){
 			 DURRE=1;
-			 System.out.println(DURRE);
+			 System.out.println("dureeeeeee"+DURRE);
 
 			 return DURRE;
 		 }
@@ -194,14 +215,14 @@ public class CongeService implements ICongeService {
 		conge.setStatus(StatusOfDemand.ACCEPTED);
 		conge = congeRepository.save(conge);
 
-		// Votre code Twilio pour envoyer un SMS
+
 		String accountSid = "ACd7086ad292bed93eaae50de57b1684fb";
 		String authToken = "d4702c7e2d3ed6556bc2af3c5b3b49e5";
 
 		Twilio.init(accountSid, authToken);
 		Message message = Message.creator(
-						new PhoneNumber("+21658046046"),  // Remplacez par le numéro de téléphone du destinataire
-						new PhoneNumber("+15416354179"),  // Remplacez par votre numéro de téléphone Twilio
+						new PhoneNumber("+21658046046"),
+						new PhoneNumber("+15416354179"),
 						"Votre demande de congé a été acceptée. Profitez de votre congé !")
 				.create();
 
@@ -215,14 +236,14 @@ public class CongeService implements ICongeService {
 		conge.setStatus(StatusOfDemand.REJECTED);
 		conge = congeRepository.save(conge);
 
-		// Votre code Twilio pour envoyer un SMS
+
 		String accountSid = "ACd7086ad292bed93eaae50de57b1684fb";
 		String authToken = "d4702c7e2d3ed6556bc2af3c5b3b49e5";
 
 		Twilio.init(accountSid, authToken);
 		Message message = Message.creator(
-						new PhoneNumber("+21658046046"),  // Remplacez par le numéro de téléphone du destinataire
-						new PhoneNumber("+15416354179"),  // Remplacez par votre numéro de téléphone Twilio
+						new PhoneNumber("+21658046046"),
+						new PhoneNumber("+15416354179"),
 						"Votre demande de congé a été Refusé !")
 				.create();
 
