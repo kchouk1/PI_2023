@@ -14,4 +14,8 @@ public interface TaskRepository extends CrudRepository<Task, Long> {
     List<Task> findAllByProjectId(Long projectId);
     @Query("SELECT COUNT(t) FROM Task t WHERE t.taskStatus = ?1")
     int countByTaskStatus(String taskStatus);
+
+    long count();
+
+
 }

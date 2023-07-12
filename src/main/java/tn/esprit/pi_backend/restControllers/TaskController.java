@@ -70,6 +70,12 @@ public class TaskController {
     }
 
 
+    @GetMapping("/counts")
+    public long getTaskCount() {
+        return taskService.getTaskCount();
+    }
+
+
     @DeleteMapping("/{id}")
     public void deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);

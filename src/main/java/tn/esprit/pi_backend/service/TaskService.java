@@ -44,6 +44,10 @@ public class TaskService implements ITaskService{
         return taskRepository.save(task);
     }
 
+    public long getTaskCount() {
+        return taskRepository.count();
+    }
+
     @Override
     public void deleteTask(Long id) {
         taskRepository.deleteById(id);
