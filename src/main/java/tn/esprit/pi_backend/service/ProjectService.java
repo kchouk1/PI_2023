@@ -1,9 +1,10 @@
-package tn.esprit.pi_backend.services;
+package tn.esprit.pi_backend.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tn.esprit.pi_backend.entities.Project;
 import tn.esprit.pi_backend.repositories.ProjectRepository;
+import tn.esprit.pi_backend.service.IProjectService;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,20 +14,29 @@ public class ProjectService implements IProjectService {
 
     @Autowired
     private ProjectRepository projectRepository;
+
     @Override
-    public Project save(Project project) {
+    public Project createProject(Project project) {
         return projectRepository.save(project);
     }
-   @Override
-    public Optional<Project> findById(Long id) {
-        return projectRepository.findById(id);
-    }
+
     @Override
-    public List<Project> findAll() {
+    public Project getProjectById(Long id) {
+        return projectRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<Project> getAllProjects() {
         return (List<Project>) projectRepository.findAll();
     }
+
     @Override
-    public void deleteById(Long id) {
+    public Project updateProject(Project project) {
+        return projectRepository.save(project);
+    }
+
+    @Override
+    public void deleteProject(Long id) {
         projectRepository.deleteById(id);
     }
 }

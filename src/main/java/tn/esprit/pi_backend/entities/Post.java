@@ -1,18 +1,27 @@
 package tn.esprit.pi_backend.entities;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import javax.persistence.*;
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@Table(schema = "Post")
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private User user;
+    private String title;
+    private String content;
 
     @ManyToOne
-    private Topic topic;
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    // Constructors, getters, and setters
 }

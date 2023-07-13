@@ -1,9 +1,16 @@
 package tn.esprit.pi_backend.entities;
 
+import lombok.*;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "task")
 public class Task {
     @Id
@@ -23,5 +30,11 @@ public class Task {
     private Project project;
 
     // Getters and setters
+    public class DeadlineVerifier {
+        public boolean isDeadlineClose(LocalDate deadline) {
+            LocalDate currentDate = LocalDate.now();
+            return currentDate.isAfter(deadline);
+        }
+    }
 }
 
