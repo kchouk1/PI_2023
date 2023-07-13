@@ -65,40 +65,32 @@ public class CongeService implements ICongeService {
 	}
 
 	public boolean verifierReglesConges(Conge nouvelleDemandeConge) {
-		System.out.println("*******************************1");
 		Optional<Team> team = teamRepository.findByUsers(nouvelleDemandeConge.getUser());
 
-		System.out.println("*******************************");
-		System.out.println("affichage "+nouvelleDemandeConge.getUser());
-		System.out.println("hhhhhhhh"+team.isPresent());
 		if (team.isPresent()){
-			System.out.println("*******************************3");
 			List<Conge> congésEquipe = new ArrayList<>();
 			for (User user : team.get().getUsers()) {
-				System.out.println("*******************************4");
 
 				congésEquipe.addAll(congeRepository.findByUser(user));
 			}
-			System.out.println("*******************************5");
 			int nombreCongesConsecutifsMax = reglesCongesRepository.findByType("rotation_conges").getValeur();
 			Period pp = Period.between( nouvelleDemandeConge.getDateDebut() ,nouvelleDemandeConge.getDateFin() );
-			 System.out.println("nombreCongesConsecutifsMax"+nombreCongesConsecutifsMax);
-			 System.out.println("======");
 
-			System.out.println(pp.getDays());
+
+			if (pp.getDays()>= nombreCongesConsecutifsMax) {
+				return false;
+
+			}
 			int nombreCongesSimultanes = 0;
 			int capaciteMaximaleVerification = reglesCongesRepository.findByType("verification_la_meme_date").getValeur();
 			for (Conge congé : congésEquipe) {
-				System.out.println("*******************************9");
 
 				if (congé.getId().equals(nouvelleDemandeConge.getId())) {
-					System.out.println("*******************************1222");
 
 					continue; // Ignorer la comparaison avec le même congé
 				}
 				if (nouvelleDemandeConge.getDateDebut().isBefore(congé.getDateFin())
 						&& congé.getDateDebut().isBefore(nouvelleDemandeConge.getDateFin())) {
-					System.out.println("*******************************1326");
 
 					nombreCongesSimultanes++;
 				}
@@ -106,14 +98,12 @@ public class CongeService implements ICongeService {
 			LocalDate currentDate = LocalDate.now();
 			Period period = Period.between(currentDate, nouvelleDemandeConge.getDateDebut());
 			if(period.getDays()< reglesCongesRepository.findByType("date_preavis").getValeur() || period.getMonths()<0) {
-				System.out.println("*******************************1656565656");
 
 				return false;
 
 			}
 
 			if (nombreCongesSimultanes >= capaciteMaximaleVerification) {
-				System.out.println("*******************************8888881");
 
 				return false;
 			}

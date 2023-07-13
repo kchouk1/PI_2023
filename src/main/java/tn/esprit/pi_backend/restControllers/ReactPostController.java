@@ -7,9 +7,12 @@ import org.springframework.web.bind.annotation.*;
 import tn.esprit.pi_backend.entities.Post;
 import tn.esprit.pi_backend.entities.ReactPost;
 import tn.esprit.pi_backend.entities.User;
+import tn.esprit.pi_backend.repositories.ReactPostRepo;
 import tn.esprit.pi_backend.repositories.UserRepository;
 import tn.esprit.pi_backend.service.IPostService;
 import tn.esprit.pi_backend.service.IReactPostService;
+
+import java.util.List;
 
 @CrossOrigin(origins = {"http://127.0.0.1:4200","http://localhost:4200"})
 @RestController
@@ -19,12 +22,14 @@ public class ReactPostController {
     private final IReactPostService reactPostService;
     private final IPostService postService;
     private final UserRepository userRepository;
+    private final ReactPostRepo reactPostRepo;
 
     @Autowired
-    public ReactPostController(IReactPostService reactPostService, IPostService postService, UserRepository userRepository) {
+    public ReactPostController(IReactPostService reactPostService, IPostService postService, UserRepository userRepository, ReactPostRepo reactPostRepo) {
         this.reactPostService = reactPostService;
         this.postService = postService;
         this.userRepository = userRepository;
+        this.reactPostRepo = reactPostRepo;
     }
 
     @PostMapping("/{postId}/{userId}")
@@ -86,6 +91,11 @@ public class ReactPostController {
 
         return existingReactPost.getDislikes();
     }
+    @GetMapping()
+    public List<ReactPost> reactPosts(){
+        return reactPostRepo.findAll();
+    }
+
 
 
     // Add additional endpoints as needed
