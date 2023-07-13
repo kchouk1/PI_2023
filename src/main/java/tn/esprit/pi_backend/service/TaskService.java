@@ -48,6 +48,31 @@ public class TaskService implements ITaskService{
         return taskRepository.count();
     }
 
+
+    @Override
+    public int countPendingTasks() {
+        String taskStatusPending = "Pending";
+        return taskRepository.countByTaskStatus(taskStatusPending);
+    }
+
+    @Override
+    public int countDoneTasks() {
+        String taskStatusPending = "Done";
+        return taskRepository.countByTaskStatus(taskStatusPending);
+    }
+
+    @Override
+    public int countTODOTasks() {
+        String taskStatusPending = "TODO";
+        return taskRepository.countByTaskStatus(taskStatusPending);
+    }
+
+    @Override
+    public int countTimeOutTasks() {
+        String taskStatusPending = "TimeOut";
+        return taskRepository.countByTaskStatus(taskStatusPending);
+    }
+
     @Override
     public void deleteTask(Long id) {
         taskRepository.deleteById(id);

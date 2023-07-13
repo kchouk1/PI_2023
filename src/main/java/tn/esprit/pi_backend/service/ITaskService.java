@@ -14,4 +14,9 @@ public interface ITaskService {
     public Task updateTaskStatus(Long id);
     //public Task updateTaskStatusToTimeOut(Long id);
     int countTasksByStatus(String taskStatus);
+    public long getTaskCount();
+    public int countPendingTasks();
+    public int countDoneTasks();
+    public int countTODOTasks();
+    public int countTimeOutTasks();
 }

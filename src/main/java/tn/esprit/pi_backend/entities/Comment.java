@@ -10,18 +10,21 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(schema = "Post")
-public class Post {
+@Table(schema = "Comment")
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
     private String content;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    private Post post;
 
     // Constructors, getters, and setters
 }

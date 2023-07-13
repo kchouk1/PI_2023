@@ -8,5 +8,8 @@ public interface IUser {
     User updateUser (User user);
     User removeuser(Long  id);
 
+    int countByRoleAdmin();
+    int countByRoleUser();
+
 
 }

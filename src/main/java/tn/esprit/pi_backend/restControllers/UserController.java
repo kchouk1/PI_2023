@@ -126,7 +126,14 @@ public class UserController {
             User result = userRepository.save(user);
             return result;
     }
-
+    @GetMapping("/count/admin")
+    public int countByRoleAdmin(){
+        return   iUser.countByRoleAdmin();
+    }
+    @GetMapping("/count/user")
+    public int countByRoleUser(){
+        return   iUser.countByRoleUser();
+    }
 
     @PutMapping("/{userId}/block")
     public ResponseEntity<User> blockUser(@PathVariable Long userId) {
@@ -146,5 +153,9 @@ public class UserController {
 
         iUser.removeuser(id);
 
+    }
+    @GetMapping("/conge/user/{userId}")
+    public User getUserId(@PathVariable("userId") Long userId){
+        return userRepository.getUserById(userId);
     }
 }

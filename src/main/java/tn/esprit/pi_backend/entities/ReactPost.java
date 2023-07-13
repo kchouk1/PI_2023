@@ -10,18 +10,22 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(schema = "Post")
-public class Post {
+@Table(schema = "ReactPost")
+public class ReactPost {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
-    private String content;
+    private int likes;
+    private int dislikes;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    private Post post;
 
     // Constructors, getters, and setters
 }

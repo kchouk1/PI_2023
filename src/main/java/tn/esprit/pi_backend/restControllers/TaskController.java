@@ -88,4 +88,24 @@ public class TaskController {
     public int countTasksByStatus(@RequestParam("status") String taskStatus) {
         return taskService.countTasksByStatus(taskStatus);
     }
+
+    @GetMapping("/count/pending")
+    public int getCountOfPendingTasks() {
+        return taskService.countPendingTasks();
+    }
+    @GetMapping("/count/done")
+    public int getCountOfDoneTasks() {
+        return taskService.countDoneTasks();
+    }
+    @GetMapping("/count/todo")
+    public int getCountOfTODOTasks() {
+        return taskService.countTODOTasks();
+    }
+    @GetMapping("/count/timeout")
+    public int getCountOfTimeOutTasks() {
+        return taskService.countTimeOutTasks();
+    }
+
+
+
 }

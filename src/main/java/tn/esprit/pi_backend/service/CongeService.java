@@ -65,42 +65,62 @@ public class CongeService implements ICongeService {
 	}
 
 	public boolean verifierReglesConges(Conge nouvelleDemandeConge) {
+		System.out.println("*******************************1");
 		Optional<Team> team = teamRepository.findByUsers(nouvelleDemandeConge.getUser());
+
+		System.out.println("*******************************");
+		System.out.println("affichage "+nouvelleDemandeConge.getUser());
+		System.out.println("hhhhhhhh"+team.isPresent());
 		if (team.isPresent()){
+			System.out.println("*******************************3");
 			List<Conge> congésEquipe = new ArrayList<>();
 			for (User user : team.get().getUsers()) {
+				System.out.println("*******************************4");
+
 				congésEquipe.addAll(congeRepository.findByUser(user));
 			}
-
+			System.out.println("*******************************5");
 			int nombreCongesConsecutifsMax = reglesCongesRepository.findByType("rotation_conges").getValeur();
 			Period pp = Period.between( nouvelleDemandeConge.getDateDebut() ,nouvelleDemandeConge.getDateFin() );
-			 System.out.println(nombreCongesConsecutifsMax);
+			 System.out.println("nombreCongesConsecutifsMax"+nombreCongesConsecutifsMax);
 			 System.out.println("======");
+
 			System.out.println(pp.getDays());
-
-
 			int nombreCongesSimultanes = 0;
 			int capaciteMaximaleVerification = reglesCongesRepository.findByType("verification_la_meme_date").getValeur();
 			for (Conge congé : congésEquipe) {
+				System.out.println("*******************************9");
+
 				if (congé.getId().equals(nouvelleDemandeConge.getId())) {
+					System.out.println("*******************************1222");
+
 					continue; // Ignorer la comparaison avec le même congé
 				}
 				if (nouvelleDemandeConge.getDateDebut().isBefore(congé.getDateFin())
 						&& congé.getDateDebut().isBefore(nouvelleDemandeConge.getDateFin())) {
+					System.out.println("*******************************1326");
+
 					nombreCongesSimultanes++;
 				}
 			}
 			LocalDate currentDate = LocalDate.now();
 			Period period = Period.between(currentDate, nouvelleDemandeConge.getDateDebut());
 			if(period.getDays()< reglesCongesRepository.findByType("date_preavis").getValeur() || period.getMonths()<0) {
+				System.out.println("*******************************1656565656");
+
 				return false;
+
 			}
 
 			if (nombreCongesSimultanes >= capaciteMaximaleVerification) {
+				System.out.println("*******************************8888881");
+
 				return false;
 			}
 			return true;
 		}
+		System.out.println("last one");
+
 		return false;
 	}
 
@@ -112,8 +132,6 @@ public class CongeService implements ICongeService {
 		Optional<List<Conge>> optionalConges = Optional.of(
 				congeRepository.findByDateDebutGreaterThanEqualAndDateFinLessThanEqualAndUserId(conge.getDateDebut(),
 						conge.getDateFin(), conge.getUser().getId()));
-
-
 		if (optionalConges.isPresent() && optionalConges.get().isEmpty()) {
 			boolean reglesCongesValidees = verifierReglesConges(conge);
 			System.out.println(reglesCongesValidees);
@@ -123,22 +141,8 @@ public class CongeService implements ICongeService {
 				return congeRepository.save(conge);
 			}
 		}
-
 		return null;
 	}
-
-	//int membresEquipe = UserRepository.countByEquipe(nouvelleDemandeConge.getEquipe());
-	//int nombreCongesConsecutifsMax = reglesCongesRepository.findByType("rotation_conges").getValeur();
-//
-//	int nombreCongesConsecutifs = congeRepository.countCongesConsecutifs(nouvelleDemandeConge.getDemandeur().getId());
-//
-//        if (nombreCongesConsecutifs >= nombreCongesConsecutifsMax) {
-//		return false; // Le quota maximum de congés consécutifs est atteint
-//	}
-
-
-
-
 
 	public long getCongeCount() {
 		return congeRepository.count();

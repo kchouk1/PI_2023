@@ -1,14 +1,19 @@
 package tn.esprit.pi_backend.restControllers;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.pi_backend.entities.Conge;
+import tn.esprit.pi_backend.entities.User;
+import tn.esprit.pi_backend.repositories.CongeRepo;
 import tn.esprit.pi_backend.repositories.UserRepository;
 
 import tn.esprit.pi_backend.service.ICongeService;
+import tn.esprit.pi_backend.service.IUser;
 
 @CrossOrigin(maxAge = 3600)
 @RestController
@@ -20,8 +25,15 @@ public class CongeController {
     UserRepository userRepository;
     private final ICongeService congeService;
 
-    public CongeController(ICongeService congeService) {
+    private final IUser userService;
+    private final CongeRepo congeRepo;
+
+    public CongeController(ICongeService congeService, IUser userService, CongeRepo congeRepo) {
+
         this.congeService = congeService;
+
+        this.userService = userService;
+        this.congeRepo = congeRepo;
     }
 
     @GetMapping
@@ -106,6 +118,11 @@ public class CongeController {
     @GetMapping("/count")
     public long getCongeCount() {
         return congeService.getCongeCount();
+    }
+    @GetMapping("/test/{userId}")
+    public List<Conge> getCongeByUser(@PathVariable Long userId){
+        Optional<User> user = userRepository.findById(userId);
+        return congeRepo.findCongeByUser(user);
     }
 
 }

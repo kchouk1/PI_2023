@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
+import tn.esprit.pi_backend.entities.Role;
 import tn.esprit.pi_backend.entities.User;
+import tn.esprit.pi_backend.repositories.RoleRepository;
 import tn.esprit.pi_backend.repositories.UserRepository;
 
 import javax.validation.Valid;
@@ -22,6 +24,8 @@ import java.util.Random;
 public class UserService implements IUser {
 
     UserRepository userRepository;
+
+    RoleRepository roleRepository;
     public EmailService emailService;
     @Autowired
     public PasswordEncoder encoder;
@@ -58,6 +62,18 @@ public class UserService implements IUser {
         return null;
     }
 
+
+    @Override
+    public int countByRoleAdmin() {
+        Role role = roleRepository.findById(2).get();
+        return userRepository.countByRoles(role);
+    }
+
+    @Override
+    public int countByRoleUser() {
+        Role role = roleRepository.findById(1).get();
+        return userRepository.countByRoles(role);
+    }
 
     public User blockUser(Long userId) {
         User user = userRepository.findById(userId)
