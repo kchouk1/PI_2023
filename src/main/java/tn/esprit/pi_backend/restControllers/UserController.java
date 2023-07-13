@@ -85,8 +85,7 @@ public class UserController {
             user.setPassword(userService.encoder.encode(otp));
             String subject = "Your HR  password ";
             String body = "Your password is: " + otp;
-            userService.emailService.sendFormationAddedEmail(user.getEmail(),body);
-            //sendEmail(user.getEmail(), subject, body);
+            userService.emailService.sendEmailForResetPassword(user.getEmail(),body);
             return new ResponseEntity<User>(userRepository.save(user), HttpStatus.ACCEPTED);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

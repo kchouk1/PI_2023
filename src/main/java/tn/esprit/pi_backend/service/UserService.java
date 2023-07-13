@@ -35,10 +35,9 @@ public class UserService implements IUser {
         String otp = generateOTP();
         user.setPassword(encoder.encode(otp));
         System.out.println(user.toString());
-        String subject = "Your HR one-time password (OTP)";
-        String body = "Your OTP is: " + otp;
-        emailService.sendFormationAddedEmail(user.getEmail(),body);
-                //sendEmail(user.getEmail(), subject, body);
+        String subject = "Your new HR  password ";
+        String body = " hello ,  Your new  password is: " + otp;
+        emailService.sendEmailForResetPassword(user.getEmail(),body);
         return userRepository.save(user);
     }
 
